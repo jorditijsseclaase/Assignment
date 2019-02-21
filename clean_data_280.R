@@ -42,12 +42,16 @@ users$velocidadMedia <- parse_number(users$velocidadMedia)
 #Rename Columns
 colnames(users)[colnames(users)=="distanciaMediaRecorrida"] <- "Avg. Distance Traveled [m]"
 colnames(users)[colnames(users)=="Fecha"] <- "Date"
-colnames(users)[colnames(users)=="tiempoMediodeRecorrido"] <- "Avg. Travel Time [hr s]"
+colnames(users)[colnames(users)=="tiempoMediodeRecorrido"] <- "avg_tr_time"
 colnames(users)[colnames(users)=="UsuariosCalle30"] <- "Users Street 30"
 colnames(users)[colnames(users)=="vehxKmRamales"] <- "Vehicles*Km Branches"
 colnames(users)[colnames(users)=="vehxKmTotales"] <- "Vehicles*Km Total"
 colnames(users)[colnames(users)=="velocidadMedia"] <- "Avg. Speed [km/h]"
 
+g <- function(x) as.numeric(gsub("min.*","",x)) * 60 + as.numeric(gsub("seg.*","",gsub(".*min.","",x)))
+vg <- Vectorize(g)
+
+users %>% mutate(avg_tr_time = vg(avg_tr_time)) -> users
 
 
 
