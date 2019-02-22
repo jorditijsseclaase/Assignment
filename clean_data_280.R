@@ -1,15 +1,20 @@
 # Street traffic 30. Historical data of users who have circulated since 2013 
 # Works
+#Clean environmemnt
+rm(list=ls())
 
 library(xml2)
 library(tidyverse)
 library(readr)
 
-pg <- read_xml("Data/280.xml")
+#loading data
+  pg<- read_xml("Data/280.xml")
 
 f <- function(u)
   map_df(xml_children(u), ~list(variable=xml_name(.x), value=xml_text(.x))) %>% spread("variable","value")
   users <- pg %>% xml_find_all('//Historico') %>% map(f)
+
+
 
 #make a dataframe out of list
 users <- do.call(rbind, users)
@@ -48,6 +53,7 @@ colnames(users)[colnames(users)=="vehxKmRamales"] <- "Vehicles_Km_Branches"
 colnames(users)[colnames(users)=="vehxKmTotales"] <- "Vehicles_Km_Total"
 colnames(users)[colnames(users)=="velocidadMedia"] <- "avg_Speed"
 
+#Make travel time in seconds
 g <- function(x) as.numeric(gsub("min.*","",x)) * 60 + as.numeric(gsub("seg.*","",gsub(".*min.","",x)))
 vg <- Vectorize(g)
 
