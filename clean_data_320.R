@@ -41,7 +41,7 @@ users$Value[5] <- parse_date(users$Value[5],format='%d/%m/%Y %H:%M:%S')
 users$Value[6] <- parse_date(users$Value[6],format='%d/%m/%Y %H:%M:%S')
 
 
-
+#DATES NOT CORRECT!
 
 
 
