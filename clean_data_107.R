@@ -3,7 +3,7 @@
 #Clean environmemnt
 rm(list=ls())
 
-library(xml2)
+
 library(tidyverse)
 
 #loading data
