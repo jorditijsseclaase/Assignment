@@ -19,7 +19,7 @@ f <- function(u)
 #Rename Columns
 colnames(users)[colnames(users)=="FECHA"] <- "Date"
 colnames(users)[colnames(users)=="Nombre"] <- "Name"
-colnames(users)[colnames(users)=="VALOR"] <- "Value"
+colnames(users)[colnames(users)=="VALOR"] <- "Chr"
 
 
 
@@ -35,11 +35,13 @@ users$Date <- a # Put it back in your dataframe
 
 
 # Convert Chr to Date and Number in 3rd column
-c <- as.POSIXct(users$Value,format="%d/%m/%Y %H:%M:%S") #produces NA when format is not a date
-d <- as.numeric(users$Value) #produces NA when format is a date
-c[is.na(c)] <- d[!is.na(d)] # Combine both while keeping their ranks
-users$Value <- c # Put it back in your dataframe
+act.Date <- as.POSIXct(users$Chr,format="%d/%m/%Y %H:%M:%S") #produces NA when format is not a date
+Value <- as.numeric(users$Chr) #produces NA when format is a date
+# c[is.na(c)] <- d[!is.na(d)] # Combine both while keeping their ranks
+# users$Value <- c # Put it back in your dataframe
+users <- add_column(users,act.Date,Value) 
 
+users <- select(users, -starts_with('Chr'))
 
 
 
