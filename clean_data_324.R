@@ -1,5 +1,6 @@
 # Traffic. Information in informative panels of variable information in surface
 # Works
+# not useful for now
 #Clean environmemnt
 rm(list=ls())
 

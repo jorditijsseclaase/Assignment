@@ -1,5 +1,7 @@
 # Traffic. Real-time traffic data 
 # Works
+# More detailed real time traffic data, not useful for now.
+
 #Clean environmemnt
 rm(list=ls())
 
