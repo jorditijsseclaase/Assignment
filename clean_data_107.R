@@ -10,59 +10,59 @@ require(XML)
 
 #loading data
 pg <- xmlParse("Data/107_2018.xml")
-users <- xmlToList(pg)
-users <- do.call(rbind, users)
-users <- as.data.frame(users)
+airquality <- xmlToList(pg)
+airquality <- do.call(rbind, airquality)
+airquality <- as.data.frame(airquality)
 
 #Tidying data
-rownames(users) <- NULL
+rownames(airquality) <- NULL
 
-users2 <- users[FALSE,1:9]
-users2[1:(31*nrow(users)),] <- 0
+airquality2 <- airquality[FALSE,1:9]
+airquality2[1:(31*nrow(airquality)),] <- 0
 
 current_row <- 0
 
-for (i in 1:nrow(users)){
+for (i in 1:nrow(airquality)){
   current_col <- 8
-  users2[(current_row + 1):(current_row + 31),1:7] <- users[i,1:7]
+  airquality2[(current_row + 1):(current_row + 31),1:7] <- airquality[i,1:7]
   for (j in 1:31){
-    users2[current_row + j,8:9] <- users[i,current_col:(current_col+1)]
+    airquality2[current_row + j,8:9] <- airquality[i,current_col:(current_col+1)]
     current_col <- current_col + 2
   }
   current_row <- current_row + 31
 }
 
 #Add day numbers
-users2$Day <- rep(1:31, times=1806, each=1)
+airquality2$Day <- rep(1:31, times=1806, each=1)
 
 #order columns
-users2 <- users2[c("provincia","municipio","estacion","magnitud","punto_muestreo","ano","mes","Day","D01","V01")]
+airquality2 <- airquality2[c("provincia","municipio","estacion","magnitud","punto_muestreo","ano","mes","Day","D01","V01")]
 
 #rename columns
-colnames(users2)[colnames(users2)=="provincia"] <- "Province"
-colnames(users2)[colnames(users2)=="municipio"] <- "Municipality"
-colnames(users2)[colnames(users2)=="estacion"] <- "Station"
-colnames(users2)[colnames(users2)=="magnitud"] <- "Magnitude"
-colnames(users2)[colnames(users2)=="provincia"] <- "Province"
-colnames(users2)[colnames(users2)=="punto_muestreo"] <- "Sampling_point"
-colnames(users2)[colnames(users2)=="ano"] <- "Year"
-colnames(users2)[colnames(users2)=="mes"] <- "Month"
-colnames(users2)[colnames(users2)=="D01"] <- "Value"
-colnames(users2)[colnames(users2)=="V01"] <- "Valid"
+colnames(airquality2)[colnames(airquality2)=="provincia"] <- "Province"
+colnames(airquality2)[colnames(airquality2)=="municipio"] <- "Municipality"
+colnames(airquality2)[colnames(airquality2)=="estacion"] <- "Station"
+colnames(airquality2)[colnames(airquality2)=="magnitud"] <- "Magnitude"
+colnames(airquality2)[colnames(airquality2)=="provincia"] <- "Province"
+colnames(airquality2)[colnames(airquality2)=="punto_muestreo"] <- "Sampling_point"
+colnames(airquality2)[colnames(airquality2)=="ano"] <- "Year"
+colnames(airquality2)[colnames(airquality2)=="mes"] <- "Month"
+colnames(airquality2)[colnames(airquality2)=="D01"] <- "Value"
+colnames(airquality2)[colnames(airquality2)=="V01"] <- "Valid"
 
 
 #change characters to numbers
-users2$Province <- as.numeric(users2$Province)
-users2$Municipality <- as.numeric(users2$Municipality)
-users2$Station <- as.numeric(users2$Station)
-users2$Magnitude <- as.numeric(users2$Magnitude)
-users2$Year <- as.numeric(users2$Year)
-users2$Month <- as.numeric(users2$Month)
-users2$Day <- as.numeric(users2$Day)
-users2$Value <- as.numeric(users2$Value)
+airquality2$Province <- as.numeric(airquality2$Province)
+airquality2$Municipality <- as.numeric(airquality2$Municipality)
+airquality2$Station <- as.numeric(airquality2$Station)
+airquality2$Magnitude <- as.numeric(airquality2$Magnitude)
+airquality2$Year <- as.numeric(airquality2$Year)
+airquality2$Month <- as.numeric(airquality2$Month)
+airquality2$Day <- as.numeric(airquality2$Day)
+airquality2$Value <- as.numeric(airquality2$Value)
 
 #Delete non valid measurements
-users2 <- users2[!(users2$Valid=="N"),]
+airquality2 <- airquality2[!(airquality2$Valid=="N"),]
   
 
 
