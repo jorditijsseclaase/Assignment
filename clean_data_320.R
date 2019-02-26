@@ -30,17 +30,11 @@ a[is.na(a)] <- b[!is.na(b)] # Combine both while keeping their ranks
 users$Date <- a # Put it back in your dataframe
 
 
-# users$Value <- as.POSIXct(users$Value,format="%d/%m/%Y %H:%M:%S")
-# users$Value <- as.numeric(users$Value)
-
 
 # Convert Chr to Date and Number in 3rd column
 act.Date <- as.POSIXct(users$Chr,format="%d/%m/%Y %H:%M:%S") #produces NA when format is not a date
 Value <- as.numeric(users$Chr) #produces NA when format is a date
-# c[is.na(c)] <- d[!is.na(d)] # Combine both while keeping their ranks
-# users$Value <- c # Put it back in your dataframe
 users <- add_column(users,act.Date,Value) 
-
 users <- select(users, -starts_with('Chr'))
 
 
