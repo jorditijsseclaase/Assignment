@@ -20,7 +20,7 @@ airquality <- as.data.frame(airquality)
 rownames(airquality) <- NULL
 
 airquality2 <- airquality[FALSE,1:10]
-airquality2[1:(31*nrow(airquality)),] <- 0
+airquality2[1:(24*nrow(airquality)),] <- 0
 
 current_row <- 0
 
