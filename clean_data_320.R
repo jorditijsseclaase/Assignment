@@ -11,31 +11,31 @@ library(tidyverse)
 
 f <- function(u)
   map_df(xml_children(u), ~list(variable=xml_name(.x), value=xml_text(.x))) %>% spread("variable","value")
-  users <- pg %>% xml_find_all('//DatoGlobal') %>% map(f)
+  trafficRT <- pg %>% xml_find_all('//DatoGlobal') %>% map(f)
 
-  users[7] <- NULL
-  users <- do.call(rbind, users)
+  trafficRT[7] <- NULL
+  trafficRT <- do.call(rbind, trafficRT)
   
 #Rename Columns
-colnames(users)[colnames(users)=="FECHA"] <- "Date"
-colnames(users)[colnames(users)=="Nombre"] <- "Name"
-colnames(users)[colnames(users)=="VALOR"] <- "Chr"
+colnames(trafficRT)[colnames(trafficRT)=="FECHA"] <- "Date"
+colnames(trafficRT)[colnames(trafficRT)=="Nombre"] <- "Name"
+colnames(trafficRT)[colnames(trafficRT)=="VALOR"] <- "Chr"
 
 
 
 # Date format first column
-a <- as.POSIXct(users$Date,format="%Y-%m-%d %H:%M:%S") # Produces NA when format is not "%Y-%m-%d %H:%M:%S"
-b <- as.POSIXct(users$Date,format="%d/%m/%Y %H:%M:%S") # Produces NA when format is not "%d/%m/%Y %H:%M:%S"
+a <- as.POSIXct(trafficRT$Date,format="%Y-%m-%d %H:%M:%S") # Produces NA when format is not "%Y-%m-%d %H:%M:%S"
+b <- as.POSIXct(trafficRT$Date,format="%d/%m/%Y %H:%M:%S") # Produces NA when format is not "%d/%m/%Y %H:%M:%S"
 a[is.na(a)] <- b[!is.na(b)] # Combine both while keeping their ranks
-users$Date <- a # Put it back in your dataframe
+trafficRT$Date <- a # Put it back in your dataframe
 
 
 
 # Convert Chr to Date and Number in 3rd column
-act.Date <- as.POSIXct(users$Chr,format="%d/%m/%Y %H:%M:%S") #produces NA when format is not a date
-Value <- as.numeric(users$Chr) #produces NA when format is a date
-users <- add_column(users,act.Date,Value) 
-users <- select(users, -starts_with('Chr'))
+act.Date <- as.POSIXct(trafficRT$Chr,format="%d/%m/%Y %H:%M:%S") #produces NA when format is not a date
+Value <- as.numeric(trafficRT$Chr) #produces NA when format is a date
+trafficRT <- add_column(trafficRT,act.Date,Value) 
+trafficRT <- select(trafficRT, -starts_with('Chr'))
 
 
 
