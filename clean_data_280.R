@@ -12,57 +12,49 @@ library(readr)
 
 #loading data
   pg<- read_xml("Data/280.xml")
-
 f <- function(u)
   map_df(xml_children(u), ~list(variable=xml_name(.x), value=xml_text(.x))) %>% spread("variable","value")
-  users <- pg %>% xml_find_all('//Historico') %>% map(f)
-
-
-
+  traffic <- pg %>% xml_find_all('//Historico') %>% map(f)
 
 
 #make a dataframe out of list
-users <- do.call(rbind, users)
+traffic <- do.call(rbind, traffic)
 
 #Put . everywhere instread of ,
-users$velocidadMedia <- gsub(",", ".", users$velocidadMedia)
+traffic$velocidadMedia <- gsub(",", ".", traffic$velocidadMedia)
 
 #remove units from text 1st column
-users$distanciaMediaRecorrida <- parse_number(users$distanciaMediaRecorrida)
+traffic$distanciaMediaRecorrida <- parse_number(traffic$distanciaMediaRecorrida)
 
 #format date 2nd column
-users$Fecha <- parse_date(users$Fecha,format='%d/%m/%Y')
-
-#remove units from text 3th column
-# users$tiempoMediodeRecorrido <- parse_date(users$tiempoMediodeRecorrido,format='%M/%S')
-
+traffic$Fecha <- parse_date(traffic$Fecha,format='%d/%m/%Y')
 
 #remove units from text 4th column
-users$UsuariosCalle30 <- parse_number(users$UsuariosCalle30)
+traffic$UsuariosCalle30 <- parse_number(traffic$UsuariosCalle30)
 
 #remove units from text 5th column
-users$vehxKmRamales <- parse_number(users$vehxKmRamales)
+traffic$vehxKmRamales <- parse_number(traffic$vehxKmRamales)
 
 #remove units from text 6th column
-users$vehxKmTotales <- parse_number(users$vehxKmTotales)
+traffic$vehxKmTotales <- parse_number(traffic$vehxKmTotales)
 
 #remove units from text 6th column
-users$velocidadMedia <- parse_number(users$velocidadMedia)
+traffic$velocidadMedia <- parse_number(traffic$velocidadMedia)
 
 #Rename Columns
-colnames(users)[colnames(users)=="distanciaMediaRecorrida"] <- "avg_tr_dist"
-colnames(users)[colnames(users)=="Fecha"] <- "Date"
-colnames(users)[colnames(users)=="tiempoMediodeRecorrido"] <- "avg_tr_time"
-colnames(users)[colnames(users)=="UsuariosCalle30"] <- "Users_Street_30"
-colnames(users)[colnames(users)=="vehxKmRamales"] <- "Vehicles_Km_Branches"
-colnames(users)[colnames(users)=="vehxKmTotales"] <- "Vehicles_Km_Total"
-colnames(users)[colnames(users)=="velocidadMedia"] <- "avg_Speed"
+colnames(traffic)[colnames(traffic)=="distanciaMediaRecorrida"] <- "avg_tr_dist"
+colnames(traffic)[colnames(traffic)=="Fecha"] <- "Date"
+colnames(traffic)[colnames(traffic)=="tiempoMediodeRecorrido"] <- "avg_tr_time"
+colnames(traffic)[colnames(traffic)=="UsuariosCalle30"] <- "traffic_Street_30"
+colnames(traffic)[colnames(traffic)=="vehxKmRamales"] <- "Vehicles_Km_Branches"
+colnames(traffic)[colnames(traffic)=="vehxKmTotales"] <- "Vehicles_Km_Total"
+colnames(traffic)[colnames(traffic)=="velocidadMedia"] <- "avg_Speed"
 
-#Make travel time in seconds
+#Make travel time in seconds 3th column
 g <- function(x) as.numeric(gsub("min.*","",x)) * 60 + as.numeric(gsub("seg.*","",gsub(".*min.","",x)))
 vg <- Vectorize(g)
 
-users %>% mutate(avg_tr_time = vg(avg_tr_time)) -> users
+traffic %>% mutate(avg_tr_time = vg(avg_tr_time)) -> traffic
 
 
 
