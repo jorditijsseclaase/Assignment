@@ -57,4 +57,90 @@ vg <- Vectorize(g)
 traffic %>% mutate(avg_tr_time = vg(avg_tr_time)) -> traffic
 
 
+#filter for year 2018
+traffic <- traffic %>% separate(Date, into = c("Year", "Month", "Day")) 
+traffic$Year <- as.numeric(traffic$Year)
+traffic$Month <- as.numeric(traffic$Month)
+traffic$Day <- as.numeric(traffic$Day)
+
+traffic2018 <- filter(traffic, Year==2018)
+
+#Unite to 1 date
+traffic2018 <- traffic2018 %>% unite(Date, Year, Month, Day, sep = "/") 
+traffic2018$Date <- as.Date(traffic2018$Date)
+
+#Unite the main file back to 1 date
+traffic <- traffic %>% unite(Date, Year, Month, Day, sep = "/") 
+traffic$Date <- as.Date(traffic$Date)
+
+##PLOTS
+
+
+#plot of average travel time (2018)
+ggplot(data = traffic2018) + 
+  geom_point(mapping = aes(x = Date, y = avg_tr_time)) +
+  geom_smooth(mapping = aes(x = Date, y = avg_tr_time))+
+  ggtitle("Average travel time (2018)")
+
+#plot of average travel time (2013-2018)
+ggplot(data = traffic) + 
+  geom_point(mapping = aes(x = Date, y = avg_tr_time)) +
+  geom_smooth(mapping = aes(x = Date, y = avg_tr_time))+
+  ggtitle("Average travel time (2013-2018)")
+
+#plot of traffic street 30 (2018)
+ggplot(data = traffic2018) + 
+  geom_point(mapping = aes(x = Date, y = traffic_Street_30)) +
+  geom_smooth(mapping = aes(x = Date, y = traffic_Street_30))+
+  ggtitle("Traffic Street 30 (2018)")
+
+#plot of traffic street 30 (2013-2018)
+ggplot(data = traffic) + 
+  geom_point(mapping = aes(x = Date, y = traffic_Street_30)) +
+  geom_smooth(mapping = aes(x = Date, y = traffic_Street_30))+
+  ggtitle("Traffic Street 30 (2013-2018)")
+
+#plot of vehicles*km_branches (2018)
+ggplot(data = traffic2018) + 
+  geom_point(mapping = aes(x = Date, y = Vehicles_Km_Branches)) +
+  geom_smooth(mapping = aes(x = Date, y = Vehicles_Km_Branches))+
+  ggtitle("Vehicles*Km Branches (2018)")
+
+#plot of vehicles*km_branches (2013-2018)
+ggplot(data = traffic) + 
+  geom_point(mapping = aes(x = Date, y = Vehicles_Km_Branches)) +
+  geom_smooth(mapping = aes(x = Date, y = Vehicles_Km_Branches))+
+  ggtitle("Vehicles*Km Branches (2013-2018)")
+
+#plot of vehicles*km_total (2018)
+ggplot(data = traffic2018) + 
+  geom_point(mapping = aes(x = Date, y = Vehicles_Km_Total)) +
+  geom_smooth(mapping = aes(x = Date, y = Vehicles_Km_Total))+
+  ggtitle("Vehicles*Km Total (2018)")
+
+#plot of vehicles*km_total (2013-2018)
+ggplot(data = traffic) + 
+  geom_point(mapping = aes(x = Date, y = Vehicles_Km_Total)) +
+  geom_smooth(mapping = aes(x = Date, y = Vehicles_Km_Total))+
+  ggtitle("Vehicles*Km Total (2013-2018)")
+
+#plot of Average speed (2018)
+ggplot(data = traffic2018) + 
+  geom_point(mapping = aes(x = Date, y = avg_Speed)) +
+  geom_smooth(mapping = aes(x = Date, y = avg_Speed))+
+  ggtitle("Average speed (2018)")
+
+#plot of vehicles*km_total (2013-2018)
+ggplot(data = traffic) + 
+  geom_point(mapping = aes(x = Date, y = avg_Speed)) +
+  geom_smooth(mapping = aes(x = Date, y = avg_Speed))+
+  ggtitle("Average speed (2013-2018)")
+
+
+
+
+
+
+
+
 
