@@ -63,6 +63,159 @@ airquality2$Value <- as.numeric(airquality2$Value)
 
 #Delete non valid measurements
 airquality2 <- airquality2[!(airquality2$Valid=="N"),]
-  
+
+#Unite to 1 date
+airquality2 <- airquality2 %>% unite(Date, Year, Month, Day, sep = "/") 
+airquality2$Date <- as.Date(airquality2$Date)
+
+
+#Filter the data to Magnitudes (and choose station 4(here below))
+# airqualityST4 <- filter(airquality2, Station==4)
+
+#SO2 (Sulfur Dioxide)
+SO2 <- filter(airquality2, Magnitude==1)
+#CO (Carbon Monoxide)
+CO <- filter(airquality2, Magnitude==6)
+#NO (Nitrogen Monoxide)
+NO <- filter(airquality2, Magnitude==7)
+#NO2 (Nitrogen dioxide)
+NO2 <- filter(airquality2, Magnitude==8)
+#Particles <2.5 nanometer
+PM2.5 <- filter(airquality2, Magnitude==9)
+#Particles <10 nanometer
+PM10 <- filter(airquality2, Magnitude==10)
+#NOx (Nitrogen oxide)
+NOx <- filter(airquality2, Magnitude==12)
+#O3 (Ozone)
+O3 <- filter(airquality2, Magnitude==14)
+#TOL (Tolueno)
+TOL <- filter(airquality2, Magnitude==20)
+#BEN (Benzene)
+BEN <- filter(airquality2, Magnitude==30)
+#EBE (Ethylbenzene)
+EBE <- filter(airquality2, Magnitude==35)
+#MXY (Metaxylene)
+MXY <- filter(airquality2, Magnitude==37)
+#PXY (Paraxylene)
+PXY <- filter(airquality2, Magnitude==38)
+#OXY (Ortoxylene)
+OXY <- filter(airquality2, Magnitude==39)
+#TCH (Total hydrocarbons (hexane))
+TCH <- filter(airquality2, Magnitude==42)
+#CH4 (Methane)
+CH4 <- filter(airquality2, Magnitude==43)
+#NMHC (Hydrocarbons non-methane (hexane))
+NMHC <- filter(airquality2, Magnitude==44)
+
+##PLOTS
+
+#plot of SO2
+ggplot(data = SO2) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("SO2")
+
+#plot of CO
+ggplot(data = CO) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("CO")
+
+#plot of NO
+ggplot(data = NO) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("NO")
+
+#plot of NO2
+ggplot(data = NO2) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("NO2") 
+
+#plot of PM2.5
+ggplot(data = PM2.5) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("PM2.5") 
+
+#plot of PM10
+ggplot(data = PM10) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("PM10") 
+
+#plot of NOx
+ggplot(data = NOx) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("NOx") 
+
+#plot of O3
+ggplot(data = O3) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("O3") 
+
+#plot of TOL
+ggplot(data = TOL) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("TOL") 
+
+#plot of BEN
+ggplot(data = BEN) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("BEN") 
+
+#plot of EBE
+ggplot(data = EBE) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("EBE") 
+
+#plot of MXY
+ggplot(data = MXY) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("MXY") 
+
+#plot of PXY
+ggplot(data = PXY) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("PXY") 
+
+#plot of OXY
+ggplot(data = OXY) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("OXY") 
+
+#plot of TCH
+ggplot(data = TCH) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("TCH") 
+
+#plot of CH4
+ggplot(data = CH4) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("CH4") 
+
+#plot of NMHC
+ggplot(data = NMHC) + 
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  geom_smooth(mapping = aes(x = Date, y = Value))+
+  ggtitle("NMHC") 
+
+
+#These plots give information about all the stations, we may filter for stations.
+
+
+
+
 
 
