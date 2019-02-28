@@ -45,7 +45,7 @@ traffic$velocidadMedia <- parse_number(traffic$velocidadMedia)
 colnames(traffic)[colnames(traffic)=="distanciaMediaRecorrida"] <- "avg_tr_dist"
 colnames(traffic)[colnames(traffic)=="Fecha"] <- "Date"
 colnames(traffic)[colnames(traffic)=="tiempoMediodeRecorrido"] <- "avg_tr_time"
-colnames(traffic)[colnames(traffic)=="UsuariosCalle30"] <- "traffic_Street_30"
+colnames(traffic)[colnames(traffic)=="UsuariosCalle30"] <- "users_Street_30"
 colnames(traffic)[colnames(traffic)=="vehxKmRamales"] <- "Vehicles_Km_Branches"
 colnames(traffic)[colnames(traffic)=="vehxKmTotales"] <- "Vehicles_Km_Total"
 colnames(traffic)[colnames(traffic)=="velocidadMedia"] <- "avg_Speed"
@@ -88,17 +88,17 @@ ggplot(data = traffic) +
   geom_smooth(mapping = aes(x = Date, y = avg_tr_time))+
   ggtitle("Average travel time (2013-2018)")
 
-#plot of traffic street 30 (2018)
+#plot of users street 30 (2018)
 ggplot(data = traffic2018) + 
-  geom_point(mapping = aes(x = Date, y = traffic_Street_30)) +
-  geom_smooth(mapping = aes(x = Date, y = traffic_Street_30))+
-  ggtitle("Traffic Street 30 (2018)")
+  geom_point(mapping = aes(x = Date, y = users_Street_30)) +
+  geom_smooth(mapping = aes(x = Date, y = users_Street_30))+
+  ggtitle("Users Street 30 (2018)")
 
-#plot of traffic street 30 (2013-2018)
+#plot of users street 30 (2013-2018)
 ggplot(data = traffic) + 
-  geom_point(mapping = aes(x = Date, y = traffic_Street_30)) +
-  geom_smooth(mapping = aes(x = Date, y = traffic_Street_30))+
-  ggtitle("Traffic Street 30 (2013-2018)")
+  geom_point(mapping = aes(x = Date, y = users_Street_30)) +
+  geom_smooth(mapping = aes(x = Date, y = users_Street_30))+
+  ggtitle("Users Street 30 (2013-2018)")
 
 #plot of vehicles*km_branches (2018)
 ggplot(data = traffic2018) + 
@@ -137,6 +137,20 @@ ggplot(data = traffic) +
   ggtitle("Average speed (2013-2018)")
 
 
+#Histogram of traffic street 30 2018
+hist(traffic2018$users_Street_30,
+     xlab="Users Street 30",
+     main="Histogram Users 2018",
+     breaks = 30
+     )
+
+
+#Histogram of average travel time 2018
+hist(traffic2018$avg_tr_time,
+     xlab="Average travel time",
+     main="Histogram average travel time 2018",
+     breaks = 20
+     )
 
 
 
