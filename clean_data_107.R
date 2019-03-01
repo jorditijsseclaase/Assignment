@@ -173,7 +173,8 @@ ggplot(data = BEN) +
 ggplot(data = EBE) + 
   geom_point(mapping = aes(x = Date, y = Value)) +
   geom_smooth(mapping = aes(x = Date, y = Value))+
-  ggtitle("EBE") 
+  ggtitle("EBE") +
+  ylim(0,5)
 
 #plot of MXY
 ggplot(data = MXY) + 

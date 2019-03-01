@@ -34,8 +34,9 @@ for (i in 1:nrow(airqualityRT)){
   current_row <- current_row + 24
 }
 
-#Add day numbers
-airqualityRT2$Hr <- rep(1:24, each=nrow(airqualityRT))
+#Add hr numbers
+# airqualityRT2$Hr <- rep(1:24, each=nrow(airqualityRT))
+airqualityRT2$Hr <- rep(1:24, times=nrow(airqualityRT), each=1)
 
 
 #order columns
@@ -74,7 +75,7 @@ airqualityRT2 <- airqualityRT2 %>% unite(Date, Year, Month, Day, sep = "/")
 airqualityRT2$Date <- as.Date(airqualityRT2$Date)
 
 #Filter the data to Magnitudes (and choose station 4(here below))
-# airqualityST4 <- filter(airqualityRT2, Station==4)
+# airqualityRT2 <- filter(airqualityRT2, Station==4)
 
 #SO2 (Sulfur Dioxide)
 SO2 <- filter(airqualityRT2, Magnitude==1)

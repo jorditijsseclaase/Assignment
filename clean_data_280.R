@@ -116,13 +116,15 @@ ggplot(data = traffic) +
 ggplot(data = traffic2018) + 
   geom_point(mapping = aes(x = Date, y = Vehicles_Km_Total)) +
   geom_smooth(mapping = aes(x = Date, y = Vehicles_Km_Total))+
-  ggtitle("Vehicles*Km Total (2018)")
+  ggtitle("Vehicles*Km Total (2018)") +
+  ylim(1*10^6,1.2*10^7)
 
 #plot of vehicles*km_total (2013-2018)
 ggplot(data = traffic) + 
   geom_point(mapping = aes(x = Date, y = Vehicles_Km_Total)) +
   geom_smooth(mapping = aes(x = Date, y = Vehicles_Km_Total))+
-  ggtitle("Vehicles*Km Total (2013-2018)")
+  ggtitle("Vehicles*Km Total (2013-2018)")+
+  ylim(1*10^6,1.2*10^7)
 
 #plot of Average speed (2018)
 ggplot(data = traffic2018) + 
