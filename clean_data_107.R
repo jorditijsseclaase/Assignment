@@ -219,4 +219,50 @@ ggplot(data = NMHC) +
 
 
 
+#AQI Calculation
+
+target <- c(1,6,8,9,10,14)
+airqualityAQI <- filter(airquality2, Magnitude %in% target)
+
+
+airqualityAQI$Value_recal <- NA
+
+
+airqualityAQI$Value_recal <- ifelse(airqualityAQI$Magnitude==1,airqualityAQI$Value_recal <-airqualityAQI$Value/2.62,
+                              ifelse(airqualityAQI$Magnitude ==6,airqualityAQI$Value_recal <-airqualityAQI$Value/1.145,
+                              ifelse(airqualityAQI$Magnitude ==8,airqualityAQI$Value_recal <-airqualityAQI$Value/1.88,
+                              ifelse(airqualityAQI$Magnitude ==9,airqualityAQI$Value_recal <-airqualityAQI$Value,
+                              ifelse(airqualityAQI$Magnitude ==10,airqualityAQI$Value_recal <-airqualityAQI$Value,
+                              ifelse(airqualityAQI$Magnitude ==14,airqualityAQI$Value_recal <-airqualityAQI$Value/2.00,NA
+                              ))))))
+#Standard levels
+airqualityAQI$Standard <- NA
+
+airqualityAQI$Standard <- ifelse(airqualityAQI$Magnitude==1,airqualityAQI$Standard <- 200,
+                              ifelse(airqualityAQI$Magnitude ==6,airqualityAQI$Standard <-9,
+                              ifelse(airqualityAQI$Magnitude ==8,airqualityAQI$Standard <-120,
+                              ifelse(airqualityAQI$Magnitude ==9,airqualityAQI$Standard <-25,
+                              ifelse(airqualityAQI$Magnitude ==10,airqualityAQI$Standard <-50,
+                              ifelse(airqualityAQI$Magnitude ==14,airqualityAQI$Standard <-100,NA
+                                                                ))))))
+#Calculate AQI
+airqualityAQI$AQI <- airqualityAQI$Value_recal/airqualityAQI$Standard*100
+
+
+
+
+#plot of AQI
+ggplot(data = airqualityAQI) + 
+  geom_point(mapping = aes(x = Date, y = AQI)) +
+  geom_smooth(mapping = aes(x = Date, y = AQI))+
+  ggtitle("AQI") 
+
+#Now i want to check per day what the highest AQI is, because this is the actual AQI, but i don't know how.
+
+
+
+
+
+
+
 
