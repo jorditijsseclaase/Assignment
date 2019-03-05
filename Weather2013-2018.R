@@ -3,6 +3,7 @@
 rm(list=ls())
 
 library(tidyverse)
+library(chron)
 
 #load data
 library("readxl")
@@ -26,6 +27,12 @@ weather$Avg_T <- (weather$T_max+weather$T_min)/2
 weather <- weather[c(1,2,3,6,4,5)]
 
 
+#Week day or weekend day
+weather$day <- weekdays.Date(weather$Date, abbr = TRUE)
+weather$weekend <- ifelse(weather$day=="za" | weather$day=="zo",weather$weekend<-1,0)
+
+
+
 #plot of average Temperature (2013-2018)
 ggplot(data = weather) + 
   geom_point(mapping = aes(x = Date, y = Avg_T)) +
@@ -37,7 +44,6 @@ ggplot(data = weather) +
   geom_point(mapping = aes(x = Date, y = Avg_vel)) +
   geom_smooth(mapping = aes(x = Date, y = Avg_vel))+
   ggtitle("Average Wind velocity (2013-2018)")
-
 
 
 
