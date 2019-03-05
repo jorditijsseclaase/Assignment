@@ -72,6 +72,11 @@ airquality2$Date <- as.Date(airquality2$Date)
 #Filter the data to Magnitudes (and choose station 4(here below))
 # airqualityST4 <- filter(airquality2, Station==4)
 
+# library(plyr)
+# airquality2$Magnitude <-  c("1"="SO2","6"="CO","7"="NO","8"="NO2","9"="PM2.5","10"="PM10","12"="NOx",
+#                                    "14"="O3","20"="TOL","30"="BEN","35"="EBE","37"="MXY","38"="PXY","39"="OXY",
+#                                    "42"="TCH","43"="CH4","44"="NMHC")
+
 #SO2 (Sulfur Dioxide)
 SO2 <- filter(airquality2, Magnitude==1)
 #CO (Carbon Monoxide)
@@ -110,7 +115,7 @@ NMHC <- filter(airquality2, Magnitude==44)
 ##PLOTS
 
 #plot of SO2
-ggplot(data = SO2) + 
+ggplot(data = airquality2) + 
   geom_point(mapping = aes(x = Date, y = Value)) +
   geom_smooth(mapping = aes(x = Date, y = Value))+
   ggtitle("SO2")
@@ -257,12 +262,17 @@ ggplot(data = airqualityAQI) +
   geom_smooth(mapping = aes(x = Date, y = AQI))+
   ggtitle("AQI") 
 
-#Now i want to check per day what the highest AQI is, because this is the actual AQI, but i don't know how.
 
 
+##MAXIMUM AQI
+library(data.table)
+Max_AQI <- setDT(airqualityAQI)[, .(AQI=max(AQI)), by = .(Date)]
 
-
-
+#plot of Maximum AQI
+ggplot(data = Max_AQI) + 
+  geom_point(mapping = aes(x = Date, y = AQI)) +
+  geom_smooth(mapping = aes(x = Date, y = AQI))+
+  ggtitle("Maximum AQI") 
 
 
 
