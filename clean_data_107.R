@@ -264,7 +264,7 @@ ggplot(data = airqualityAQI) +
 
 
 
-##MAXIMUM AQI
+## MAXIMUM AQI
 library(data.table)
 Max_AQI <- setDT(airqualityAQI)[, .(AQI=max(AQI)), by = .(Date)]
 

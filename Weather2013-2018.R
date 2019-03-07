@@ -51,14 +51,12 @@ weather$Season <- getSeason(weather$Date)
 #plot of average Temperature (2013-2018)
 ggplot(data = weather) +
   geom_point(mapping = aes(x = Date, y = Avg_T, color=Season)) +
-  geom_smooth(mapping = aes(x = Date, y = Avg_T))+
   ggtitle("Average temperature (2013-2018)")
 
 
 #plot of average Wind velocity (2013-2018)
 ggplot(data = weather) +
   geom_point(mapping = aes(x = Date, y = Avg_vel)) +
-  geom_smooth(mapping = aes(x = Date, y = Avg_vel))+
   ggtitle("Average Wind velocity (2013-2018)")
 
 

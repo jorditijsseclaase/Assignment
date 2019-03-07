@@ -44,8 +44,6 @@ x<-c("Date_Tunnel","Date_Surface","Total_Veh_Tunnel","Total_Veh_M30","Avg_Speed_
 colnames(trafficRT2) <- x
 
 
-
-
 trafficRT2$Date_Tunnel <- trafficRT$act.Date[5]
 trafficRT2$Date_Surface <- trafficRT$act.Date[6]
 trafficRT2$Total_Veh_Tunnel <- trafficRT$Value[1]
