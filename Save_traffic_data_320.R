@@ -4,6 +4,9 @@ rm(list=ls())
 library(XML)
 library(xml2)
 library(tidyverse)
+library(writexl)
+library("readxl")
+
 
 #loading data
 pg<- read_xml("https://datos.madrid.es/egob/catalogo/212117-7899005-trafico-calle30-general.xml")
@@ -39,11 +42,11 @@ trafficRT <- select(trafficRT, -starts_with('Chr'))
 
 ## rebuilt dataframe
 
-trafficRT2 = data.frame(matrix(ncol = 6))
-x<-c("Date_Tunnel","Date_Surface","Total_Veh_Tunnel","Total_Veh_M30","Avg_Speed_Tunnel","Avg_Speed_Surface")
+trafficRT2 = data.frame(matrix(ncol = 7))
+x<-c("Run_Time","Date_Tunnel","Date_Surface","Total_Veh_Tunnel","Total_Veh_M30","Avg_Speed_Tunnel","Avg_Speed_Surface")
 colnames(trafficRT2) <- x
 
-
+trafficRT2$Run_Time <- Sys.time()
 trafficRT2$Date_Tunnel <- trafficRT$act.Date[5]
 trafficRT2$Date_Surface <- trafficRT$act.Date[6]
 trafficRT2$Total_Veh_Tunnel <- trafficRT$Value[1]
@@ -52,9 +55,22 @@ trafficRT2$Avg_Speed_Tunnel <- trafficRT$Value[3]
 trafficRT2$Avg_Speed_Surface <- trafficRT$Value[4]
 
 
+#Write to excel file
+# write_xlsx(trafficRT2, "RT_traffic_5min.xlsx")
+
+trafficRT3 <- read_excel("RT_traffic_5min.xlsx")
+trafficRT3[nrow(trafficRT3) + 1,] = trafficRT2
 
 
+write_xlsx(trafficRT3, "RT_traffic_5min.xlsx")
 
+
+#Clear data frame if 1 hour is completed.
+# if (nrow(trafficRT3>4)){trafficRT3 <- trafficRT3[0,]
+# 
+# } else{trafficRT3[nrow(trafficRT3) + 1,] = trafficRT2
+# 
+# }
 
 
 
