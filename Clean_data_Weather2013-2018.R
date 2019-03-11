@@ -49,7 +49,7 @@ weather$Season <- getSeason(weather$Date)
 
 
 #write to excel file
-write_xlsx(weather, "weather2013-2018.xlsx")
+write_xlsx(weather, "Cleaned_Weather2013-2018.xlsx")
 
 
 

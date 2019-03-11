@@ -6,7 +6,7 @@ rm(list=ls())
 library(xml2)
 library(tidyverse)
 library(readr)
-
+library(writexl)
 
 
 
@@ -57,6 +57,10 @@ vg <- Vectorize(g)
 traffic %>% mutate(avg_tr_time = vg(avg_tr_time)) -> traffic
 
 
+#Write to excel file
+write_xlsx(traffic, "Cleaned_Traffic2013-2018.xlsx")
+
+
 #filter for year 2018
 traffic <- traffic %>% separate(Date, into = c("Year", "Month", "Day")) 
 traffic$Year <- as.numeric(traffic$Year)
@@ -72,6 +76,11 @@ traffic2018$Date <- as.Date(traffic2018$Date)
 #Unite the main file back to 1 date
 traffic <- traffic %>% unite(Date, Year, Month, Day, sep = "/") 
 traffic$Date <- as.Date(traffic$Date)
+
+
+
+
+
 
 ##PLOTS
 
