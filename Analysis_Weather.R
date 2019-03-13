@@ -9,7 +9,7 @@ library(writexl)
 #load data
 library("readxl")
 
-weather <- read_excel("weather2013-2018.xlsx")
+weather <- read_excel("Cleaned_Weather2013-2018.xlsx")
 
 
 #PLOTS

@@ -57,6 +57,11 @@ vg <- Vectorize(g)
 traffic %>% mutate(avg_tr_time = vg(avg_tr_time)) -> traffic
 
 
+#exclude 2019 from data frame
+traffic <- traffic %>% filter(Date<="2019-01-01")
+
+
+
 #Write to excel file
 write_xlsx(traffic, "Cleaned_Traffic2013-2018.xlsx")
 

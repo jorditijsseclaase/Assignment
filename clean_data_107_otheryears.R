@@ -66,7 +66,7 @@ airquality2$Value <- as.numeric(airquality2$Value)
 airquality2$Valid <- as.character(airquality2$Valid)
 
 #Delete non valid measurements
-airquality2 <- airquality2[!(airquality2$Valid=="N"),]
+# airquality2 <- airquality2[!(airquality2$Valid=="N"),]
 
 #Unite to 1 date
 airquality2 <- airquality2 %>% unite(Date, Year, Month, Day, sep = "/") 
@@ -111,10 +111,10 @@ Max_AQI <- setDT(airqualityAQI)[, .(AQI=max(AQI)), by = .(Date)]
 
 
 #Write airquality to excel file
-write_xlsx(airquality2, "Cleaned_Airquality2013.xlsx")
+write_xlsx(airquality2, "Cleaned_Airquality2013_2.xlsx")
 
 #Write AQI to excel file
-write_xlsx(Max_AQI, "Cleaned_AQI2013.xlsx")
+write_xlsx(Max_AQI, "Cleaned_AQI2013_2.xlsx")
 
 
 
