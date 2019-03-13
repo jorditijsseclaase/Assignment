@@ -7,6 +7,8 @@ library(tidyverse)
 library(writexl)
 library("readxl")
 
+#Change time zone to central european time
+Sys.setenv(TZ='CET')
 
 #loading data
 pg<- read_xml("https://datos.madrid.es/egob/catalogo/212117-7899005-trafico-calle30-general.xml")
@@ -43,10 +45,10 @@ trafficRT <- select(trafficRT, -starts_with('Chr'))
 ## rebuilt dataframe
 
 trafficRT2 = data.frame(matrix(ncol = 7))
-x<-c("Run_Time","Date_Tunnel","Date_Surface","Total_Veh_Tunnel","Total_Veh_M30","Avg_Speed_Tunnel","Avg_Speed_Surface")
+x<-c("Run_Date","Date_Tunnel","Date_Surface","Total_Veh_Tunnel","Total_Veh_M30","Avg_Speed_Tunnel","Avg_Speed_Surface")
 colnames(trafficRT2) <- x
 
-trafficRT2$Run_Time <- Sys.time()
+trafficRT2$Run_Date <- Sys.time()
 trafficRT2$Date_Tunnel <- trafficRT$act.Date[5]
 trafficRT2$Date_Surface <- trafficRT$act.Date[6]
 trafficRT2$Total_Veh_Tunnel <- trafficRT$Value[1]
@@ -55,22 +57,22 @@ trafficRT2$Avg_Speed_Tunnel <- trafficRT$Value[3]
 trafficRT2$Avg_Speed_Surface <- trafficRT$Value[4]
 
 
-#Write to excel file
-# write_xlsx(trafficRT2, "RT_traffic_5min.xlsx")
 
-trafficRT3 <- read_excel("RT_traffic_5min.xlsx")
+#Write to excel file
+# write_csv(trafficRT2, "RT_traffic_5min.csv")
+## TIME ZONE CHANGES WHEN WRITING TO CSV........ WHY?!?
+
+trafficRT3 <- read_csv("RT_traffic_5min.csv")
 trafficRT3[nrow(trafficRT3) + 1,] = trafficRT2
 
-
-write_xlsx(trafficRT3, "RT_traffic_5min.xlsx")
+write_csv(trafficRT3, "RT_traffic_5min.csv")
 
 
 #Clear data frame if 1 hour is completed.
-# if (nrow(trafficRT3>4)){trafficRT3 <- trafficRT3[0,]
-# 
-# } else{trafficRT3[nrow(trafficRT3) + 1,] = trafficRT2
-# 
-# }
+if (nrow(trafficRT3)>12){trafficRT3 <- trafficRT3[0,]
+
+} 
+
 
 
 
