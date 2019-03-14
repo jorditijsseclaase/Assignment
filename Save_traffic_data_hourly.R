@@ -1,5 +1,7 @@
 #Save traffic data and take average per hour
 
+#Run every hour starting 1 minute after the hour
+
 rm(list=ls())
 
 library(XML)
@@ -29,6 +31,9 @@ trafficRT_60$Avg_Speed_Surface <- mean(trafficRT_5$Avg_Speed_Surface)
 
 trafficRT_60_1 <- read_csv("RT_traffic_hourly.csv")
 trafficRT_60_1[nrow(trafficRT_60_1) + 1,] = trafficRT_60
+
+#Change time zone of trafficRT_60_1 to Madrid time
+trafficRT_60_1 <- with_tz(trafficRT_60_1,"CET")
 
 write_csv(trafficRT_60_1, "RT_traffic_hourly.csv")
 

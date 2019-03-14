@@ -1,4 +1,7 @@
 #320 Real time traffic data to save hourly data
+
+#Run every 5 minutes starting at 5 min after the hour.
+
 rm(list=ls())
 
 library(XML)
@@ -60,18 +63,22 @@ trafficRT2$Avg_Speed_Surface <- trafficRT$Value[4]
 
 #Write to excel file
 # write_csv(trafficRT2, "RT_traffic_5min.csv")
-## TIME ZONE CHANGES WHEN WRITING TO CSV........ WHY?!?
+
 
 trafficRT3 <- read_csv("RT_traffic_5min.csv")
 trafficRT3[nrow(trafficRT3) + 1,] = trafficRT2
-
-write_csv(trafficRT3, "RT_traffic_5min.csv")
-
 
 #Clear data frame if 1 hour is completed.
 if (nrow(trafficRT3)>12){trafficRT3 <- trafficRT3[0,]
 
 } 
+#Change time zone of trafficRT3 to Madrid time
+trafficRT3 <- with_tz(trafficRT3,"CET")
+
+write_csv(trafficRT3, "RT_traffic_5min.csv")
+
+
+
 
 
 
