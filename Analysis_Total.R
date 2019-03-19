@@ -43,6 +43,23 @@ Total$EBE <- airquality2013_2018$Value[airquality2013_2018$Magnitude==35]
 #Add AQI
 Total$AQI <- AQI2013_2018$AQI
 
+
+
+#Add day of the year
+Total$DayNr <- yday(Total$Date)
+
+
+#Add month seperately
+Total$Month <- month(Total$Date)
+
+
+#Add Holidays
+
+
+
+
+
+
 #Write total to excel file
 write_xlsx(Total, "Cleaned_Total.xlsx")
 

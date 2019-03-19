@@ -10,7 +10,7 @@ library("readxl")
 
 Total <- read_excel("Cleaned_Total.xlsx")
 
-#plot of AQI to users street 30
+#plot of AQI to users street 30a
 ggplot(data = Total) + 
   geom_point(mapping = aes(x=users_Street30, y=AQI))+
   # geom_smooth(mapping = aes(x= Date, y=AQI))+
