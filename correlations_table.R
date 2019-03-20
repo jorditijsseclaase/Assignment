@@ -13,16 +13,8 @@ Total <- read_excel("Cleaned_Total.xlsx")
 
 
 
-
-#Reorder data frame
-Total <- Total[c("Date", "day", "DayNr","Month","Daytype","Season",
-                 "T_max","T_min","Avg_T","Streak_max","Avg_vel","avg_tr_dist","avg_tr_time",
-                 "users_Street30","Vehicles_Km_Branches","Vehicles_Km_Total","avg_Speed",
-                 "SO2","CO","NO","NO2","PM2.5","PM10","NOx","O3","TOL","BEN","EBE","AQI"
-                 )]
-
 #Make everything a number
-library(plyr)
+# library(plyr)
 
 Total$Daytype <- revalue(Total$Daytype,
                 c("Weekday" = "0", "Weekend" = "1"))
