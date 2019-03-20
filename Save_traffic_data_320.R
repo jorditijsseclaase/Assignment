@@ -10,6 +10,8 @@ library(tidyverse)
 library(writexl)
 library("readxl")
 
+library(lubridate)
+
 #Change time zone to central european time
 Sys.setenv(TZ='CET')
 
@@ -75,10 +77,10 @@ if (nrow(trafficRT3)>12){trafficRT3 <- trafficRT3[0,]
 #Change time zone of trafficRT3 to Madrid time
 trafficRT3 <- with_tz(trafficRT3,"CET")
 
-write_csv(trafficRT3, "RT_traffic_5min.csv")
+# write_csv(trafficRT3, "RT_traffic_5min.csv")
 
 
-
+trafficRT3
 
 
 

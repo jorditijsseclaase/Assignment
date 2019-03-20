@@ -65,7 +65,10 @@ ggplot(data = Total) +
 
 
 
-
+#plot of Date to users m30
+ggplot(data = Total) + 
+  geom_point(mapping = aes(x=users_Street30, y=Date))+
+  ggtitle("Date to number of users street 30")
 
 
 
