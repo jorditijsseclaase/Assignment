@@ -30,6 +30,7 @@ Total$day <- NULL
 Total$Date <- NULL
 
 
+#Correlations table
 cor <- cor(Total, use = "pairwise.complete.obs")
 
 
