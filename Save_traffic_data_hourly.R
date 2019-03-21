@@ -10,34 +10,25 @@ library(tidyverse)
 library(writexl)
 library("readxl")
 
+day <- function(date) strtoi(format(as.Date(date), "%y%m%d"))
 
-trafficRT_5 <- read_csv("RT_traffic_5min.csv")
+#read the file in the correct Madrid time zone
+trafficRT_5 <- with_tz(read_csv("RT_traffic_5min.csv"),"CET")
 
+# set my_time to the beggining of current hour
+my_time <- Sys.time()
+minute(my_time) <- 0
+second(my_time) <- 0
 
-trafficRT_60 <- data.frame(matrix(ncol = 5))
-x<-c("Run_Date","Avg_Total_Veh_Tunnel","Avg_Total_Veh_M30","Avg_Speed_Tunnel","Avg_Speed_Surface")
-colnames(trafficRT_60) <- x
+# filter all rows with time before this hour
+new_df <- trafficRT_5 %>% filter(Run_Date < my_time) %>% mutate(day=day(Run_Date), hour=hour(Run_Date))
+new_df <- new_df %>% group_by(day, hour) %>% summarise_all(mean) %>% ungroup()
+new_df <- new_df %>% select(Run_Date, Total_Veh_Tunnel, Total_Veh_M30, Avg_Speed_Tunnel, Avg_Speed_Surface)
+minute(new_df$Run_Date) <- 0
+second(new_df$Run_Date) <- 0
 
+write_csv(new_df, "RT_traffic_hourly.csv", append = T)
 
-trafficRT_60$Run_Date <- Sys.time()
-trafficRT_60$Avg_Total_Veh_Tunnel <- mean(trafficRT_5$Total_Veh_Tunnel)
-trafficRT_60$Avg_Total_Veh_M30 <- mean(trafficRT_5$Total_Veh_M30)
-trafficRT_60$Avg_Speed_Tunnel <- mean(trafficRT_5$Avg_Speed_Tunnel)
-trafficRT_60$Avg_Speed_Surface <- mean(trafficRT_5$Avg_Speed_Surface)
-
-
-#Write to excel file
-# write_csv(trafficRT_60, "RT_traffic_hourly.csv")
-
-trafficRT_60_1 <- read_csv("RT_traffic_hourly.csv")
-trafficRT_60_1[nrow(trafficRT_60_1) + 1,] = trafficRT_60
-
-#Change time zone of trafficRT_60_1 to Madrid time
-trafficRT_60_1 <- with_tz(trafficRT_60_1,"CET")
-
-write_csv(trafficRT_60_1, "RT_traffic_hourly.csv")
-
-
-
-
-
+# filter all rows with time after this hour
+old_df <- trafficRT_5 %>% filter(Run_Date >= my_time)
+write_csv(old_df, "RT_traffic_5min.csv")

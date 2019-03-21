@@ -61,20 +61,8 @@ trafficRT2$Total_Veh_M30 <- trafficRT$Value[2]
 trafficRT2$Avg_Speed_Tunnel <- trafficRT$Value[3]
 trafficRT2$Avg_Speed_Surface <- trafficRT$Value[4]
 
-
-
-#Write to excel file
-# write_csv(trafficRT2, "RT_traffic_5min.csv")
-
-
-trafficRT3 <- read_csv("RT_traffic_5min.csv")
-trafficRT3[nrow(trafficRT3) + 1,] = trafficRT2
-
-
-#Change time zone of trafficRT3 to Madrid time
-trafficRT3 <- with_tz(trafficRT3,"CET")
-
-write_csv(trafficRT3, "RT_traffic_5min.csv")
+# write new observation to file
+write_csv(trafficRT2, "RT_traffic_5min.csv", append = TRUE)
 
 
 
