@@ -1,20 +1,13 @@
 #Save traffic data and take average per hour
 
 #Run every hour starting 1 minute after the hour
-
-rm(list=ls())
-
-library(XML)
-library(xml2)
 library(tidyverse)
-library(writexl)
-library(readxl)
-library(lubridate)
+#library(lubridate)
 
 day <- function(date) strtoi(format(as.Date(date), "%y%m%d"))
 
 #read the file in the correct Madrid time zone
-trafficRT_5 <- with_tz(read_csv("RT_traffic_5min.csv"),"CET")
+trafficRT_5 <- lubridate::with_tz(read_csv("RT_traffic_5min.csv"),"CET")
 
 # set my_time to the beggining of current hour
 my_time <- Sys.time()
