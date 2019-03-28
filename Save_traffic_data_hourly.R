@@ -8,7 +8,8 @@ library(XML)
 library(xml2)
 library(tidyverse)
 library(writexl)
-library("readxl")
+library(readxl)
+library(lubridate)
 
 day <- function(date) strtoi(format(as.Date(date), "%y%m%d"))
 
