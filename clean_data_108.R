@@ -35,7 +35,7 @@ for (i in 1:nrow(airquality)){
 }
 
 #Add day numbers
-airquality2$Hr <- rep(1:24, times=4490, each=1)
+airquality2$Hr <- rep(1:24, times=nrow(airquality), each=1)
 
 
 #order columns

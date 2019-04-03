@@ -11,7 +11,7 @@ library("readxl")
 weather <- read_excel("Data/Weather_2013-2018.xlsx")
 
 #Rename Columns
-x<-c("Date","T_max","T_min","Streak_max","Streak_hr","Avg_vel")
+x<-c("Date","T_max","T_min","Streak_max","Streak_hr","Avg_Streak","Rain_ml")
 colnames(weather) <- x
 
 
@@ -20,11 +20,12 @@ weather$T_max <- parse_number(weather$T_max)
 weather$T_min <- parse_number(weather$T_min)
 weather$Streak_max <- parse_number(weather$Streak_max)
 weather$Streak_hr <- NULL
-weather$Avg_vel <- parse_number(weather$Avg_vel)
+weather$Avg_Streak <- parse_number(weather$Avg_Streak)
+weather$Rain_ml <- parse_number(weather$Rain_ml)
 
 #Calculate average temperature
 weather$Avg_T <- (weather$T_max+weather$T_min)/2
-weather <- weather[c(1,2,3,6,4,5)]
+
 
 
 #Week day or weekend day
@@ -47,6 +48,15 @@ ifelse (d >= WS | d < SE, "Winter",
 }
 weather$Season <- getSeason(weather$Date)
 
+
+weather$Rain <- ifelse(weather$Rain_ml>0, weather$Rain<-"1" ,"0")
+weather$Rain <- as.numeric(weather$Rain)
+weather$Rain_ml <- as.numeric(weather$Rain_ml)
+
+
+
+
+weather <- weather[c(1,2,3,7,4,5,6,11,8,9,10)]
 
 #write to excel file
 write_xlsx(weather, "Cleaned_Weather2013-2018.xlsx")
