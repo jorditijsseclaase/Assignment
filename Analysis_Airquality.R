@@ -37,31 +37,43 @@ AQI2013_2018 <- rbind(AQI2013,AQI2014,AQI2015,AQI2016,AQI2017,AQI2018)
 
 
 
-#Filter for station 8 (Escuelas Aquirre)
-airquality2013_2018 <- filter(airquality2013_2018, Station==8)
+# #Filter for station 8 (Escuelas Aquirre)
+# airquality2013_2018 <- filter(airquality2013_2018, Station==8)
+# 
+# 
+# #Assign NA if not valid
+# airquality2013_2018$Value[airquality2013_2018$Valid=="N"]=NA
+# 
+# 
+# #Remove dates which are NA
+# completeFun <- function(data, desiredCols) {
+#   completeVec <- complete.cases(data[, desiredCols])
+#   return(data[completeVec, ])
+# }
+# airquality2013_2018 <- completeFun(airquality2013_2018, "Date")
+# AQI2013_2018 <- completeFun(AQI2013_2018, "Date")
+# 
+# 
+# #Write airquality to excel file
+# write_xlsx(airquality2013_2018, "Cleaned_Airquality2013_2018.xlsx")
+# 
+# write_xlsx(AQI2013_2018,"Cleaned_AQI2013_2018.xlsx")
 
 
-#Assign NA if not valid
-airquality2013_2018$Value[airquality2013_2018$Valid=="N"]=NA
 
+NO2_2013_2018 <- filter(airquality2013_2018, Magnitude==8)
 
-#Remove dates which are NA
-completeFun <- function(data, desiredCols) {
-  completeVec <- complete.cases(data[, desiredCols])
-  return(data[completeVec, ])
-}
-airquality2013_2018 <- completeFun(airquality2013_2018, "Date")
-AQI2013_2018 <- completeFun(AQI2013_2018, "Date")
+#plot of NO2 for all stations
+ggplot(data = NO2_2013_2018) +
+  geom_point(mapping = aes(x = Date, y = Value)) +
+  ylim(0,500)+
+  ggtitle("NO2")
 
-
-#Write airquality to excel file
-write_xlsx(airquality2013_2018, "Cleaned_Airquality2013_2018.xlsx")
-
-write_xlsx(AQI2013_2018,"Cleaned_AQI2013_2018.xlsx")
-
-
-
-
+#plot of AQI
+ggplot(data = AQI2013_2018) +
+  geom_point(mapping = aes(x = Date, y = AQI)) +
+  ylim(0,500)+
+  ggtitle("AQI")
 
 
 
