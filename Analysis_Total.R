@@ -182,7 +182,7 @@ Total$Holiday <- getHoliday(Total$Date)
 
 #Reorder data frame
 Total <- Total[c("Date", "day", "DayNr","Month","Daytype","Season","Holiday",
-                 "T_max","T_min","Avg_T","Streak_max","Avg_vel","avg_tr_dist","avg_tr_time",
+                 "T_max","T_min","Avg_T","Streak_max","Rain_ml","Rain","Avg_Streak","avg_tr_dist","avg_tr_time",
                  "users_Street30","Vehicles_Km_Branches","Vehicles_Km_Total","avg_Speed",
                  "SO2","CO","NO","NO2","PM2.5","PM10","NOx","O3","TOL","BEN","EBE","AQI"
 )]
@@ -225,7 +225,7 @@ ggplot(data = Total) +
 
 #plot of avg Speed M30
 ggplot(data = Total) +
-  geom_point(mapping = aes(x = Date, y = avg_Speed, color=Daytype)) +
+  geom_point(mapping = aes(x = Date, y = avg_Speed, color=Rain)) +
   # ylim(0,1.5*10^7)+
   ggtitle("Average speed M30")
 
