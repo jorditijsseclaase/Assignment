@@ -11,7 +11,7 @@ library(writexl)
 library("readxl")
 
 #loading data
-pg <- xmlParse("Data/107_2013.xml")
+pg <- xmlParse("Data/107_2018.xml")
 airquality <- xmlToList(pg)
 airquality <- do.call(rbind, airquality)
 airquality <- as.data.frame(airquality)
@@ -74,50 +74,75 @@ airquality2$Date <- as.Date(airquality2$Date)
 
 
 
-#AQI Calculation
-
-target <- c(1,6,8,9,10,14)
-airqualityAQI <- filter(airquality2, Magnitude %in% target)
-
-
-airqualityAQI$Value_recal <- NA
-
-
-airqualityAQI$Value_recal <- ifelse(airqualityAQI$Magnitude==1,airqualityAQI$Value_recal <-airqualityAQI$Value/2.62,
-                                    ifelse(airqualityAQI$Magnitude ==6,airqualityAQI$Value_recal <-airqualityAQI$Value/1.145,
-                                           ifelse(airqualityAQI$Magnitude ==8,airqualityAQI$Value_recal <-airqualityAQI$Value/1.88,
-                                                  ifelse(airqualityAQI$Magnitude ==9,airqualityAQI$Value_recal <-airqualityAQI$Value,
-                                                         ifelse(airqualityAQI$Magnitude ==10,airqualityAQI$Value_recal <-airqualityAQI$Value,
-                                                                ifelse(airqualityAQI$Magnitude ==14,airqualityAQI$Value_recal <-airqualityAQI$Value/2.00,NA
-                                                                ))))))
-#Standard levels
-airqualityAQI$Standard <- NA
-
-airqualityAQI$Standard <- ifelse(airqualityAQI$Magnitude==1,airqualityAQI$Standard <- 200,
-                                 ifelse(airqualityAQI$Magnitude ==6,airqualityAQI$Standard <-9,
-                                        ifelse(airqualityAQI$Magnitude ==8,airqualityAQI$Standard <-120,
-                                               ifelse(airqualityAQI$Magnitude ==9,airqualityAQI$Standard <-25,
-                                                      ifelse(airqualityAQI$Magnitude ==10,airqualityAQI$Standard <-50,
-                                                             ifelse(airqualityAQI$Magnitude ==14,airqualityAQI$Standard <-100,NA
-                                                             ))))))
-#Calculate AQI
-airqualityAQI$AQI <- airqualityAQI$Value_recal/airqualityAQI$Standard*100
-
-## MAXIMUM AQI
-library(data.table)
-Max_AQI <- setDT(airqualityAQI)[, .(AQI=max(AQI)), by = .(Date)]
+# #AQI Calculation
+# 
+# target <- c(1,6,8,9,10,14)
+# airqualityAQI <- filter(airquality2, Magnitude %in% target)
+# 
+# 
+# airqualityAQI$Value_recal <- NA
+# 
+# 
+# airqualityAQI$Value_recal <- ifelse(airqualityAQI$Magnitude==1,airqualityAQI$Value_recal <-airqualityAQI$Value/2.62,
+#                                     ifelse(airqualityAQI$Magnitude ==6,airqualityAQI$Value_recal <-airqualityAQI$Value/1.145,
+#                                            ifelse(airqualityAQI$Magnitude ==8,airqualityAQI$Value_recal <-airqualityAQI$Value/1.88,
+#                                                   ifelse(airqualityAQI$Magnitude ==9,airqualityAQI$Value_recal <-airqualityAQI$Value,
+#                                                          ifelse(airqualityAQI$Magnitude ==10,airqualityAQI$Value_recal <-airqualityAQI$Value,
+#                                                                 ifelse(airqualityAQI$Magnitude ==14,airqualityAQI$Value_recal <-airqualityAQI$Value/2.00,NA
+#                                                                 ))))))
+# #Standard levels
+# airqualityAQI$Standard <- NA
+# 
+# airqualityAQI$Standard <- ifelse(airqualityAQI$Magnitude==1,airqualityAQI$Standard <- 200,
+#                                  ifelse(airqualityAQI$Magnitude ==6,airqualityAQI$Standard <-9,
+#                                         ifelse(airqualityAQI$Magnitude ==8,airqualityAQI$Standard <-120,
+#                                                ifelse(airqualityAQI$Magnitude ==9,airqualityAQI$Standard <-25,
+#                                                       ifelse(airqualityAQI$Magnitude ==10,airqualityAQI$Standard <-50,
+#                                                              ifelse(airqualityAQI$Magnitude ==14,airqualityAQI$Standard <-100,NA
+#                                                              ))))))
+# #Calculate AQI
+# airqualityAQI$AQI <- airqualityAQI$Value_recal/airqualityAQI$Standard*100
+# 
+# ## MAXIMUM AQI
+# library(data.table)
+# Max_AQI <- setDT(airqualityAQI)[, .(AQI=max(AQI)), by = .(Date)]
 
 
 
 
 #Write airquality to excel file
-write_xlsx(airquality2, "Cleaned_Airquality2013_2.xlsx")
+# write_xlsx(airquality2, "Cleaned_Airquality2013_2.xlsx")
 
 #Write AQI to excel file
-write_xlsx(Max_AQI, "Cleaned_AQI2013_2.xlsx")
+# write_xlsx(Max_AQI, "Cleaned_AQI2013_2.xlsx")
 
 
+#make NO2 dataframe with all station
 
+NO2 <- filter(airquality2, Magnitude==8)
+
+NO2 <- NO2[,c("Date","Station","Value","Valid")]
+
+#Delete non valid measurements
+NO2 <- NO2[!(NO2$Valid=="N"),]
+
+# if(NO2$Valid=="N") {NO2$Value<-na}
+
+NO2$Valid <- NULL
+
+
+library(tidyr)
+library(dplyr)
+
+
+NO2_2 <- NO2 %>% 
+  group_by_at(vars(-Value)) %>%  # group by everything other than the value column. 
+  mutate(row_id=1:n()) %>% ungroup() %>%  # build group index
+  spread(Station, Value) %>%    # spread
+  select(-row_id)  # drop the index
+
+#Write NO2 to excel file
+write_xlsx(NO2_2, "NO2_2018.xlsx")
 
 
 
