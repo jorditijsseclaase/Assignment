@@ -182,7 +182,7 @@ Total$Holiday <- getHoliday(Total$Date)
 
 #Reorder data frame
 Total <- Total[c("Date", "day", "DayNr","Month","Daytype","Season","Holiday",
-                 "T_max","T_min","Avg_T","Streak_max","Rain_ml","Rain","Avg_Streak","avg_tr_dist","avg_tr_time",
+                 "T_max","T_min","Avg_T","Streak_max","Rain_ml","Rain","Days_last_rain","Avg_Streak","avg_tr_dist","avg_tr_time",
                  "users_Street30","Vehicles_Km_Branches","Vehicles_Km_Total","avg_Speed",
                  "SO2","CO","NO","NO2","PM2.5","PM10","NOx","O3","TOL","BEN","EBE","AQI"
 )]
