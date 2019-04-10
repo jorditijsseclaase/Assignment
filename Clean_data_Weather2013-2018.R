@@ -53,10 +53,25 @@ weather$Rain <- ifelse(weather$Rain_ml>0, weather$Rain<-"1" ,"0")
 weather$Rain <- as.numeric(weather$Rain)
 weather$Rain_ml <- as.numeric(weather$Rain_ml)
 
+#Insert 0 if Rain is NA
+weather$Rain[is.na(weather$Rain)] <- "0"
 
 
+#Calculate days since last rain
 
-weather <- weather[c(1,2,3,7,4,5,6,11,8,9,10)]
+weather$Rain2 <- ifelse(weather$Rain_ml>0, weather$Rain2<-"0" ,"1")
+weather$Rain2 <- as.numeric(weather$Rain2)
+#Insert 0 if Rain is NA
+weather$Rain2[is.na(weather$Rain2)] <- "0"
+
+
+ 
+weather$Days_last_rain <- with(weather, ave(Rain2, cumsum(Rain2==0), FUN = cumsum))      
+
+weather$Rain2 <- NULL
+
+
+weather <- weather[c(1,2,3,7,4,5,6,11,12,8,9,10)]
 
 #write to excel file
 write_xlsx(weather, "Cleaned_Weather2013-2018.xlsx")
