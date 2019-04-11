@@ -21,7 +21,7 @@ NO2 <- filter(airquality_hourly, Magnitude==8)
 # ifelse(NO2$V01=="N",NO2$H01<-NA, NO2$H01 <- NO2$H0)
 
 
-
+NO2$H01 <- NO2$H01 * ifelse(NO2$V01=="V",1,NA)
 
 
 
