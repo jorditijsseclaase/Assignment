@@ -1,0 +1,168 @@
+#Clean environment
+rm(list=ls())
+
+
+library(tidyverse)
+library(XML)
+require(XML)
+library(writexl)
+library("readxl")
+library(dplyr)
+library(lubridate)
+
+
+Total <- read_excel("Cleaned_Total.xlsx")
+
+Total <- Total %>% select(1:21)
+
+NO2_max_per_day <- read_excel("Cleaned_NO2_max_hourly.xlsx")
+
+
+Total_NO2 <- Total
+
+Total_NO2$Avg_Max_NO2 <- NO2_max_per_day$avg_NO2
+Total_NO2$Max_NO2 <- NO2_max_per_day$max_NO2
+Total_NO2$Max_NO2_station <-NO2_max_per_day$max_NO2_station
+Total_NO2$num_stations_NO2_max_50 <-NO2_max_per_day$num_stations_NO2_max_50
+Total_NO2$num_stations_NO2_50_100 <-NO2_max_per_day$num_stations_NO2_50_100
+Total_NO2$num_stations_NO2_100_180 <-NO2_max_per_day$num_stations_NO2_100_180
+Total_NO2$num_stations_NO2_180_200 <-NO2_max_per_day$num_stations_NO2_180_200
+Total_NO2$num_stations_NO2_200_400 <-NO2_max_per_day$num_stations_NO2_200_400
+Total_NO2$num_stations_NO2_min_400 <-NO2_max_per_day$num_stations_NO2_min_400
+
+
+# Make everything a numbered structure
+Total_NO2$Rain <- as.numeric(Total_NO2$Rain)
+Total_NO2$Days_last_rain <- as.numeric(Total_NO2$Days_last_rain)
+Total_NO2$Avg_Max_NO2 <- as.numeric(Total_NO2$Avg_Max_NO2)
+Total_NO2$Max_NO2_station <- as.numeric(Total_NO2$Max_NO2_station)
+
+
+#Write to csv
+write_xlsx(Total_NO2, "Cleaned_Total_NO2_max_hourly.xlsx")
+
+
+
+
+## Make Neural network dataframe for matlab
+NN <- Total_NO2
+
+
+#Make everything a number
+library(plyr)
+
+NN$Daytype <- revalue(NN$Daytype,
+                         c("Weekday" = "0", "Weekend" = "1"))
+NN$Daytype <- as.numeric(NN$Daytype)
+
+
+NN$Season <- revalue(NN$Season,
+                        c("Winter" = "1", "Spring" = "2", "Summer"="3","Fall" = "4"))
+NN$Season <- as.numeric(NN$Season)
+
+
+NN$day <- NULL
+NN$Date <- NULL
+
+#Write to csv
+write_xlsx(NN, "NN.xlsx")
+
+
+
+plot(Total_NO2$Date,Total_NO2$users_Street30)
+
+
+#plot of users M30
+ggplot(data = head(Total_NO2,2191)) +
+  geom_point(mapping = aes(x = Date, y = Max_NO2, color=Season)) +
+ 
+  # ylim(0,1.5*10^7)+
+  ggtitle("Total users per day M30")
+
+
+
+
+#Function multiplot
+
+library(ggplot2)
+
+multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
+  require(grid)
+  
+  # Make a list from the ... arguments and plotlist
+  plots <- c(list(...), plotlist)
+  
+  numPlots = length(plots)
+  
+  # If layout is NULL, then use 'cols' to determine layout
+  if (is.null(layout)) {
+    # Make the panel
+    # ncol: Number of columns of plots
+    # nrow: Number of rows needed, calculated from # of cols
+    layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),
+                     ncol = cols, nrow = ceiling(numPlots/cols))
+  }
+  
+  if (numPlots==1) {
+    print(plots[[1]])
+    
+  } else {
+    # Set up the page
+    grid.newpage()
+    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+    
+    # Make each plot, in the correct location
+    for (i in 1:numPlots) {
+      # Get the i,j matrix positions of the regions that contain this subplot
+      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
+      
+      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+                                      layout.pos.col = matchidx$col))
+    }
+  }
+}
+
+
+
+#Plots NO2, T_max, Wind
+p1 <- ggplot(data =head(Total_NO2,2191),aes(x = Date, y = Avg_Max_NO2)) +
+  # geom_line()+
+  stat_smooth(method="gam",formula=y~s(x,k=100),se=FALSE)
+
+p2 <- ggplot(data =head(Total_NO2,2191),aes(x = Date, y = T_max)) +
+  # geom_line()+
+  stat_smooth(method="gam",formula=y~s(x,k=100),se=FALSE)
+
+p3 <- ggplot(Total_NO2, aes(x=Date, y=Avg_Streak))+
+  # geom_line()+
+  stat_smooth(method="gam",formula=y~s(x,k=100),se=FALSE)
+
+p4 <- ggplot(Total_NO2, aes(x=Date, y=users_Street30))+
+  #   geom_point()+
+  stat_smooth(method="gam",formula=y~s(x,k=1000),se=FALSE)
+  
+
+
+multiplot(p1,p2,p3,p4,cols=1)
+
+
+#Correlation
+
+#Correlations table
+cor <- cor(NN, use = "pairwise.complete.obs")
+
+
+
+#Random plots
+# ggplot(Total_NO2, aes(x=Date, y=users_Street30))+
+#   geom_point()+
+#   stat_smooth(method="gam",formula=y~s(x,k=1000),se=FALSE)
+
+
+# ggplot(Total_NO2, aes(x=Date, y=Rain_ml))+
+#   geom_line()+
+#   stat_smooth(method="gam",formula=y~s(x,k=400),se=FALSE)
+
+
+
+

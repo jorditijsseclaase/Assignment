@@ -18,11 +18,30 @@ NO2 <- filter(airquality_hourly, Magnitude==8)
 
 
 #DEAL WITH NON VALID MEASUREMENTS
-# ifelse(NO2$V01=="N",NO2$H01<-NA, NO2$H01 <- NO2$H0)
-
-
 NO2$H01 <- NO2$H01 * ifelse(NO2$V01=="V",1,NA)
-
+NO2$H02 <- NO2$H02 * ifelse(NO2$V02=="V",1,NA)
+NO2$H03 <- NO2$H03 * ifelse(NO2$V03=="V",1,NA)
+NO2$H04 <- NO2$H04 * ifelse(NO2$V04=="V",1,NA)
+NO2$H05 <- NO2$H05 * ifelse(NO2$V05=="V",1,NA)
+NO2$H06 <- NO2$H06 * ifelse(NO2$V06=="V",1,NA)
+NO2$H07 <- NO2$H07 * ifelse(NO2$V07=="V",1,NA)
+NO2$H08 <- NO2$H08 * ifelse(NO2$V08=="V",1,NA)
+NO2$H09 <- NO2$H09 * ifelse(NO2$V09=="V",1,NA)
+NO2$H10 <- NO2$H10 * ifelse(NO2$V10=="V",1,NA)
+NO2$H11 <- NO2$H11 * ifelse(NO2$V11=="V",1,NA)
+NO2$H12 <- NO2$H12 * ifelse(NO2$V12=="V",1,NA)
+NO2$H13 <- NO2$H13 * ifelse(NO2$V13=="V",1,NA)
+NO2$H14 <- NO2$H14 * ifelse(NO2$V14=="V",1,NA)
+NO2$H15 <- NO2$H15 * ifelse(NO2$V15=="V",1,NA)
+NO2$H16 <- NO2$H16 * ifelse(NO2$V16=="V",1,NA)
+NO2$H17 <- NO2$H17 * ifelse(NO2$V17=="V",1,NA)
+NO2$H18 <- NO2$H18 * ifelse(NO2$V18=="V",1,NA)
+NO2$H19 <- NO2$H19 * ifelse(NO2$V19=="V",1,NA)
+NO2$H20 <- NO2$H20 * ifelse(NO2$V20=="V",1,NA)
+NO2$H21 <- NO2$H21 * ifelse(NO2$V21=="V",1,NA)
+NO2$H22 <- NO2$H22 * ifelse(NO2$V22=="V",1,NA)
+NO2$H23 <- NO2$H23 * ifelse(NO2$V23=="V",1,NA)
+NO2$H24 <- NO2$H24 * ifelse(NO2$V24=="V",1,NA)
 
 
 
@@ -118,10 +137,12 @@ NO2_test$Max_NO2_hour <- as.numeric(NO2_test$Max_NO2_hour)
 #Histograms
 hist(NO2_test$Max_day,
      xlim=c(0,500),
-     breaks=400)
+     breaks=100,
+     main="Histogram of max NO2 concentration per day")
 
 hist(NO2_test$Max_NO2_hour,
-     breaks=20)
+     breaks=20,
+     main="Histogram of hours with max NO2 concentration")
 
 NO2$Max_day <- NO2_test$Max_day
 
@@ -155,7 +176,7 @@ NO2_new2$num_stations_NO2_50_100 <- apply(NO2_new2[,c(2:25)], 1 ,function(x)sum(
 NO2_new2$num_stations_NO2_100_180 <- apply(NO2_new2[,c(2:25)], 1 ,function(x)sum(x>100&x<180,na.rm=T))
 
 #Number of stations between 180 and 200
-NO2_new2$num_stations_NO2_100_180 <- apply(NO2_new2[,c(2:25)], 1 ,function(x)sum(x>180&x<200,na.rm=T))
+NO2_new2$num_stations_NO2_180_200 <- apply(NO2_new2[,c(2:25)], 1 ,function(x)sum(x>180&x<200,na.rm=T))
 
 #Number of stations between 200 and 400
 NO2_new2$num_stations_NO2_200_400 <- apply(NO2_new2[,c(2:25)], 1 ,function(x)sum(x>200&x<400,na.rm=T))
@@ -165,6 +186,205 @@ NO2_new2$num_stations_NO2_min_400 <- apply(NO2_new2[,c(2:25)], 1 ,function(x)sum
 
 
 
+#Write to csv
+write_xlsx(NO2_new2, "Cleaned_NO2_max_hourly.xlsx")
+
+
+
+
+
+#Check number of stations where NO2 concentration exceeds limits
+#more than 2 consecutive hours
+#alert levels:
+# 0 <180
+# 1 >180 <200 2 stations 2 consecutive hours
+# 2 >200 <400 2 stations 2 consecutive hours
+# 3 >400 3 stations 2 consecutive hours
+
+#alert level hour 1 and 2
+
+
+
+
+
+
+
+
+
+
+# NO2$alert_level <- 0
+# 
+# NO2$alert_level <- if(NO2$H24 > 180 && NO2$H24 <200 &&
+#                       NO2$H01 > 180 && NO2$H01 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H01 > 180 && NO2$H01 <200 &&
+#                                 NO2$H02 > 180 && NO2$H02 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H01 > 180 && NO2$H01 <200 &&
+#                                 NO2$H02 > 180 && NO2$H02 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H02 > 180 && NO2$H02 <200 &&
+#                                 NO2$H03 > 180 && NO2$H03 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H03 > 180 && NO2$H03 <200 &&
+#                                 NO2$H04 > 180 && NO2$H04 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H04 > 180 && NO2$H04 <200 &&
+#                                 NO2$H05 > 180 && NO2$H05 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H05 > 180 && NO2$H05 <200 &&
+#                                 NO2$H06 > 180 && NO2$H06 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H06 > 180 && NO2$H06 <200 &&
+#                                 NO2$H07 > 180 && NO2$H07 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H07 > 180 && NO2$H07 <200 &&
+#                                 NO2$H08 > 180 && NO2$H08 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H08 > 180 && NO2$H08 <200 &&
+#                                 NO2$H09 > 180 && NO2$H09 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H09 > 180 && NO2$H09 <200 &&
+#                                 NO2$H10 > 180 && NO2$H10 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H10 > 180 && NO2$H10 <200 &&
+#                                 NO2$H11 > 180 && NO2$H11 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H11 > 180 && NO2$H11 <200 &&
+#                                 NO2$H12 > 180 && NO2$H12 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H12 > 180 && NO2$H12 <200 &&
+#                                 NO2$H13 > 180 && NO2$H13 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H13 > 180 && NO2$H13 <200 &&
+#                                 NO2$H14 > 180 && NO2$H14 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H14 > 180 && NO2$H14 <200 &&
+#                                 NO2$H15 > 180 && NO2$H15 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H15 > 180 && NO2$H15 <200 &&
+#                                 NO2$H16 > 180 && NO2$H16 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H16 > 180 && NO2$H16 <200 &&
+#                                 NO2$H17 > 180 && NO2$H17 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H17 > 180 && NO2$H17 <200 &&
+#                                 NO2$H18 > 180 && NO2$H18 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H18 > 180 && NO2$H18 <200 &&
+#                                 NO2$H19 > 180 && NO2$H19 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H19 > 180 && NO2$H19 <200 &&
+#                                 NO2$H20 > 180 && NO2$H20 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H20 > 180 && NO2$H20 <200 &&
+#                                 NO2$H21 > 180 && NO2$H21 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H21 > 180 && NO2$H21 <200 &&
+#                                 NO2$H22 > 180 && NO2$H22 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H22 > 180 && NO2$H22 <200 &&
+#                                 NO2$H23 > 180 && NO2$H23 <200) {NO2$alert_level <- 1
+#                       }else if (NO2$H23 > 180 && NO2$H23 <200 &&
+#                                 NO2$H24 > 180 && NO2$H24 <200) {NO2$alert_level <- 1
+#                                 
+#                       }else if (NO2$H24 > 200 && NO2$H24 <400 &&
+#                                 NO2$H01 > 200 && NO2$H01 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H01 > 200 && NO2$H01 <400 &&
+#                                 NO2$H02 > 200 && NO2$H02 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H01 > 200 && NO2$H01 <400 &&
+#                                 NO2$H02 > 200 && NO2$H02 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H02 > 200 && NO2$H02 <400 &&
+#                                 NO2$H03 > 200 && NO2$H03 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H03 > 200 && NO2$H03 <400 &&
+#                                 NO2$H04 > 200 && NO2$H04 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H04 > 200 && NO2$H04 <400 &&
+#                                 NO2$H05 > 200 && NO2$H05 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H05 > 200 && NO2$H05 <400 &&
+#                                 NO2$H06 > 200 && NO2$H06 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H06 > 200 && NO2$H06 <400 &&
+#                                 NO2$H07 > 200 && NO2$H07 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H07 > 200 && NO2$H07 <400 &&
+#                                 NO2$H08 > 200 && NO2$H08 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H08 > 200 && NO2$H08 <400 &&
+#                                 NO2$H09 > 200 && NO2$H09 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H09 > 200 && NO2$H09 <400 &&
+#                                 NO2$H10 > 200 && NO2$H10 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H10 > 200 && NO2$H10 <400 &&
+#                                 NO2$H11 > 200 && NO2$H11 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H11 > 200 && NO2$H11 <400 &&
+#                                 NO2$H12 > 200 && NO2$H12 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H12 > 200 && NO2$H12 <400 &&
+#                                 NO2$H13 > 200 && NO2$H13 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H13 > 200 && NO2$H13 <400 &&
+#                                 NO2$H14 > 200 && NO2$H14 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H14 > 200 && NO2$H14 <400 &&
+#                                 NO2$H15 > 200 && NO2$H15 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H15 > 200 && NO2$H15 <400 &&
+#                                 NO2$H16 > 200 && NO2$H16 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H16 > 200 && NO2$H16 <400 &&
+#                                 NO2$H17 > 200 && NO2$H17 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H17 > 200 && NO2$H17 <400 &&
+#                                 NO2$H18 > 200 && NO2$H18 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H18 > 200 && NO2$H18 <400 &&
+#                                 NO2$H19 > 200 && NO2$H19 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H19 > 200 && NO2$H19 <400 &&
+#                                 NO2$H20 > 200 && NO2$H20 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H20 > 200 && NO2$H20 <400 &&
+#                                 NO2$H21 > 200 && NO2$H21 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H21 > 200 && NO2$H21 <400 &&
+#                                 NO2$H22 > 200 && NO2$H22 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H22 > 200 && NO2$H22 <400 &&
+#                                 NO2$H23 > 200 && NO2$H23 <400) {NO2$alert_level <- 2
+#                       }else if (NO2$H23 > 200 && NO2$H23 <400 &&
+#                                 NO2$H24 > 200 && NO2$H24 <400) {NO2$alert_level <- 2
+# 
+# 
+#                       }else if (NO2$H24 > 400&&
+#                                 NO2$H01 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H01 > 400&&
+#                                 NO2$H02 > 400 ) {NO2$alert_level <- 3
+#                       }else if (NO2$H01 > 400&& 
+#                                 NO2$H02 > 400 ) {NO2$alert_level <- 3
+#                       }else if (NO2$H02 > 400&&
+#                                 NO2$H03 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H03 > 400&&
+#                                 NO2$H04 > 400 ) {NO2$alert_level <- 3
+#                       }else if (NO2$H04 > 400&&
+#                                 NO2$H05 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H05 > 400&&
+#                                 NO2$H06 > 400 ) {NO2$alert_level <- 3
+#                       }else if (NO2$H06 > 400&&
+#                                 NO2$H07 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H07 > 400&&
+#                                 NO2$H08 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H08 > 400&&
+#                                 NO2$H09 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H09 > 400&&
+#                                 NO2$H10 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H10 > 400&&
+#                                 NO2$H11 > 400 ) {NO2$alert_level <- 3
+#                       }else if (NO2$H11 > 400&&
+#                                 NO2$H12 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H12 > 400&&
+#                                 NO2$H13 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H13 > 400&&
+#                                 NO2$H14 > 400 ) {NO2$alert_level <- 3
+#                       }else if (NO2$H14 > 400&&
+#                                 NO2$H15 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H15 > 400&&
+#                                 NO2$H16 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H16 > 400&&
+#                                 NO2$H17 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H17 > 400&&
+#                                 NO2$H18 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H18 > 400&&
+#                                 NO2$H19 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H19 > 400&&
+#                                 NO2$H20 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H20 > 400&&
+#                                 NO2$H21 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H21 > 400&&
+#                                 NO2$H22 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H22 > 400&&
+#                                 NO2$H23 > 400) {NO2$alert_level <- 3
+#                       }else if (NO2$H23 > 400&&
+#                                 NO2$H24 > 400) {NO2$alert_level <- 3}
+
+
+# NO2$num_stations_NO2_180_200_2hr <- ifelse(NO2$H24 > 180 & NO2$H24 <200 &
+#                                           NO2$H01 > 180 & NO2$H01 <200)
+#                                           ,NO2$num_stations_NO2_180_200_2hr <- 2,0)
+# 
+# 
+
+# 
+# NO2$num_stations_NO2_180_200_2hr <- ifelse(NO2$H24 > 180 & NO2$H24 <200 &
+#                                           NO2$H01 > 180 & NO2$H01 <200,
+#                                           NO2$num_stations_NO2_180_200_2hr <- 1,
+#                                           0)
+# 
+# NO2$num_stations_NO2_180_200_2hr <- ifelse(NO2$H01 > 180 & NO2$H01 <200 &
+#                                              NO2$H02 > 180 & NO2$H02 <200,
+#                                            NO2$num_stations_NO2_180_200_2hr <- 2,
+#                                            0)
 
 
 
