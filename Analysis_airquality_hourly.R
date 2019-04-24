@@ -1,9 +1,10 @@
 # Air quality. Hourly data years 2013-2018
 # Works
 #Clean environmemnt
-rm(list=ls())
+# rm(list=ls())
 
 
+library(lubridate)
 library(tidyverse)
 library(writexl)
 library("readxl")
@@ -14,7 +15,7 @@ airquality_hourly <- read_excel("Cleaned_Airquality_hourly_2013_2018.xlsx")
 
 #make NO2 dataframe with all station
 
-NO2 <- filter(airquality_hourly, Magnitude==8)
+NO2 <- airquality_hourly %>% filter(Magnitude==8)
 
 
 #DEAL WITH NON VALID MEASUREMENTS
@@ -43,8 +44,18 @@ NO2$H22 <- NO2$H22 * ifelse(NO2$V22=="V",1,NA)
 NO2$H23 <- NO2$H23 * ifelse(NO2$V23=="V",1,NA)
 NO2$H24 <- NO2$H24 * ifelse(NO2$V24=="V",1,NA)
 
+NO2_hour <- NO2 %>% 
+  select('Station', 'Date', starts_with('H')) %>% 
+  mutate(Date = as.Date(Date)) %>%
+  gather(Hour, Value, starts_with('H')) %>% 
+  mutate(Hour = strtoi(substring(Hour, 2))) %>%
+  drop_na()
 
-
+NO2_hour <- NO2_hour %>% 
+  mutate(Date = as.Date(Date)) %>% 
+  group_by(Date, Hour) %>% 
+  summarise(mean = mean(Value)) %>% 
+  ungroup()
 
 NO2_test <- NO2[,c("Date","H01","V01",
                           "H02","V02",
@@ -96,6 +107,30 @@ NO2_test$V22 <- NULL
 NO2_test$V23 <- NULL
 NO2_test$V24 <- NULL
 
+NO2_test <- NO2[,c("Date","H01","V01",
+                   "H02","V02",
+                   "H03","V03",
+                   "H04","V04",
+                   "H05","V05",
+                   "H06","V06",
+                   "H07","V07",
+                   "H08","V08",
+                   "H09","V09",
+                   "H10","V10",
+                   "H11","V11",
+                   "H12","V12",
+                   "H13","V13",
+                   "H14","V14",
+                   "H15","V15",
+                   "H16","V16",
+                   "H17","V17",
+                   "H18","V18",
+                   "H19","V19",
+                   "H20","V20",
+                   "H21","V21",
+                   "H22","V22",
+                   "H23","V23",
+                   "H24","V24")]
 
 
 #Max NO2 of all hours
@@ -132,6 +167,7 @@ NO2_test$Max_NO2_hour[NO2_test$Max_NO2_hour=="H23"] <- 23
 NO2_test$Max_NO2_hour[NO2_test$Max_NO2_hour=="H24"] <- 24
 
 NO2_test$Max_NO2_hour <- as.numeric(NO2_test$Max_NO2_hour)
+
 
 
 #Histograms
