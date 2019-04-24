@@ -37,6 +37,8 @@ Total_NO2$Days_last_rain <- as.numeric(Total_NO2$Days_last_rain)
 Total_NO2$Avg_Max_NO2 <- as.numeric(Total_NO2$Avg_Max_NO2)
 Total_NO2$Max_NO2_station <- as.numeric(Total_NO2$Max_NO2_station)
 
+Total_NO2$Avg_Max_NO2 <- as.numeric(Total_NO2$Avg_Max_NO2)
+
 
 #Write to csv
 write_xlsx(Total_NO2, "Cleaned_Total_NO2_max_hourly.xlsx")
@@ -150,6 +152,20 @@ multiplot(p1,p2,p3,p4,cols=1)
 
 #Correlations table
 cor <- cor(NN, use = "pairwise.complete.obs")
+
+
+#Correlation plots
+ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = T_max)) +
+  geom_point()+
+  stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
+
+ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = Avg_Streak)) +
+  geom_point()+
+  stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
+
+ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = users_Street30)) +
+  geom_point()+
+  stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
 
 
 
