@@ -128,6 +128,7 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
 #Plots NO2, T_max, Wind
 p1 <- ggplot(data =head(Total_NO2,2191),aes(x = Date, y = Avg_Max_NO2)) +
+  ylab("Max_NO2")+
   # geom_line()+
   stat_smooth(method="gam",formula=y~s(x,k=100),se=FALSE)
 
@@ -156,14 +157,17 @@ cor <- cor(NN, use = "pairwise.complete.obs")
 
 #Correlation plots
 ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = T_max)) +
+  xlab("Max_NO2")+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
 
 ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = Avg_Streak)) +
+  xlab("Max_NO2")+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
 
 ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = users_Street30)) +
+  xlab("Max_NO2")+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
 

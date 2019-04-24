@@ -1,7 +1,7 @@
 # Air quality. Hourly data years 2013-2018
 # Works
 #Clean environmemnt
-# rm(list=ls())
+rm(list=ls())
 
 
 library(lubridate)
@@ -47,90 +47,98 @@ NO2$H24 <- NO2$H24 * ifelse(NO2$V24=="V",1,NA)
 NO2_hour <- NO2 %>% 
   select('Station', 'Date', starts_with('H')) %>% 
   mutate(Date = as.Date(Date)) %>%
-  gather(Hour, Value, starts_with('H')) %>% 
-  mutate(Hour = strtoi(substring(Hour, 2))) %>%
-  drop_na()
+  gather(Hour, Value, starts_with('H'))  
 
-NO2_hour <- NO2_hour %>% 
+# %>%
+#   mutate(Hour = strtoi(substring(Hour, 2))) %>%
+#   drop_na()
+  
+NO2_hour$Hour[NO2_hour$Hour=="H01"] <- 1
+NO2_hour$Hour[NO2_hour$Hour=="H02"] <- 2
+NO2_hour$Hour[NO2_hour$Hour=="H03"] <- 3
+NO2_hour$Hour[NO2_hour$Hour=="H04"] <- 4
+NO2_hour$Hour[NO2_hour$Hour=="H05"] <- 5
+NO2_hour$Hour[NO2_hour$Hour=="H06"] <- 6
+NO2_hour$Hour[NO2_hour$Hour=="H07"] <- 7
+NO2_hour$Hour[NO2_hour$Hour=="H08"] <- 8
+NO2_hour$Hour[NO2_hour$Hour=="H09"] <- 9
+NO2_hour$Hour[NO2_hour$Hour=="H10"] <- 10
+NO2_hour$Hour[NO2_hour$Hour=="H11"] <- 11
+NO2_hour$Hour[NO2_hour$Hour=="H12"] <- 12
+NO2_hour$Hour[NO2_hour$Hour=="H13"] <- 13
+NO2_hour$Hour[NO2_hour$Hour=="H14"] <- 14
+NO2_hour$Hour[NO2_hour$Hour=="H15"] <- 15
+NO2_hour$Hour[NO2_hour$Hour=="H16"] <- 16
+NO2_hour$Hour[NO2_hour$Hour=="H17"] <- 17
+NO2_hour$Hour[NO2_hour$Hour=="H18"] <- 18
+NO2_hour$Hour[NO2_hour$Hour=="H19"] <- 19
+NO2_hour$Hour[NO2_hour$Hour=="H20"] <- 20
+NO2_hour$Hour[NO2_hour$Hour=="H21"] <- 21
+NO2_hour$Hour[NO2_hour$Hour=="H22"] <- 22
+NO2_hour$Hour[NO2_hour$Hour=="H23"] <- 23
+NO2_hour$Hour[NO2_hour$Hour=="H24"] <- 24
+  
+NO2_hour$Hour <- as.numeric(NO2_hour$Hour)
+
+
+
+NO2_hour <- NO2_hour%>% 
+  drop_na() %>%
   mutate(Date = as.Date(Date)) %>% 
   group_by(Date, Hour) %>% 
   summarise(mean = mean(Value)) %>% 
   ungroup()
 
-NO2_test <- NO2[,c("Date","H01","V01",
-                          "H02","V02",
-                           "H03","V03",
-                           "H04","V04",
-                           "H05","V05",
-                           "H06","V06",
-                           "H07","V07",
-                           "H08","V08",
-                           "H09","V09",
-                           "H10","V10",
-                           "H11","V11",
-                           "H12","V12",
-                           "H13","V13",
-                           "H14","V14",
-                           "H15","V15",
-                           "H16","V16",
-                           "H17","V17",
-                           "H18","V18",
-                           "H19","V19",
-                           "H20","V20",
-                           "H21","V21",
-                           "H22","V22",
-                           "H23","V23",
-                           "H24","V24")]
 
-NO2_test$V01 <- NULL
-NO2_test$V02 <- NULL
-NO2_test$V03 <- NULL
-NO2_test$V04 <- NULL
-NO2_test$V05 <- NULL
-NO2_test$V06 <- NULL
-NO2_test$V07 <- NULL
-NO2_test$V08 <- NULL
-NO2_test$V09 <- NULL
-NO2_test$V10 <- NULL
-NO2_test$V11 <- NULL
-NO2_test$V12 <- NULL
-NO2_test$V13 <- NULL
-NO2_test$V14 <- NULL
-NO2_test$V15 <- NULL
-NO2_test$V16 <- NULL
-NO2_test$V17 <- NULL
-NO2_test$V18 <- NULL
-NO2_test$V19 <- NULL
-NO2_test$V20 <- NULL
-NO2_test$V21 <- NULL
-NO2_test$V22 <- NULL
-NO2_test$V23 <- NULL
-NO2_test$V24 <- NULL
 
-NO2_test <- NO2[,c("Date","H01","V01",
-                   "H02","V02",
-                   "H03","V03",
-                   "H04","V04",
-                   "H05","V05",
-                   "H06","V06",
-                   "H07","V07",
-                   "H08","V08",
-                   "H09","V09",
-                   "H10","V10",
-                   "H11","V11",
-                   "H12","V12",
-                   "H13","V13",
-                   "H14","V14",
-                   "H15","V15",
-                   "H16","V16",
-                   "H17","V17",
-                   "H18","V18",
-                   "H19","V19",
-                   "H20","V20",
-                   "H21","V21",
-                   "H22","V22",
-                   "H23","V23",
-                   "H24","V24")]
+ggplot(data =NO2_hour,aes(x = Hour, y = mean,color=Date)) +
+  geom_point()+
+  stat_smooth()+
+  ylab("NO2 concentration")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+NO2_test <- NO2[,c("Date","H01",
+                          "H02",
+                           "H03",
+                           "H04",
+                           "H05",
+                           "H06",
+                           "H07",
+                           "H08",
+                           "H09",
+                           "H10",
+                           "H11",
+                           "H12",
+                           "H13",
+                           "H14",
+                           "H15",
+                           "H16",
+                           "H17",
+                           "H18",
+                           "H19",
+                           "H20",
+                           "H21",
+                           "H22",
+                           "H23",
+                           "H24")]
+
+
+
 
 
 #Max NO2 of all hours
