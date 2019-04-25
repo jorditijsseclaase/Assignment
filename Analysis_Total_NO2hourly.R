@@ -156,21 +156,39 @@ cor <- cor(NN, use = "pairwise.complete.obs")
 
 
 #Correlation plots
+
+#T
 ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = T_max)) +
   xlab("Max_NO2")+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
 
+#Wind
 ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = Avg_Streak)) +
   xlab("Max_NO2")+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
 
+#Users Street 30
 ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = users_Street30)) +
   xlab("Max_NO2")+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
 
+
+
+#Rain
+q1 <- ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = Rain)) +
+  xlab("Max_NO2")+
+  geom_point()
+  # stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
+
+q2 <- ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = Rain_ml)) +
+  xlab("Max_NO2")+
+  geom_point()+
+  stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
+
+multiplot(q1,q2,cols=2)
 
 
 #Random plots

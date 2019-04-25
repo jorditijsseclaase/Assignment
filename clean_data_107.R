@@ -83,23 +83,25 @@ airqualityAQI <- filter(airquality2, Magnitude %in% target)
 airqualityAQI$Value_recal <- NA
 
 
-airqualityAQI$Value_recal <- ifelse(airqualityAQI$Magnitude==1,airqualityAQI$Value_recal <-airqualityAQI$Value/2.62,
-                                    ifelse(airqualityAQI$Magnitude ==6,airqualityAQI$Value_recal <-airqualityAQI$Value/1.145,
-                                           ifelse(airqualityAQI$Magnitude ==8,airqualityAQI$Value_recal <-airqualityAQI$Value/1.88,
-                                                  ifelse(airqualityAQI$Magnitude ==9,airqualityAQI$Value_recal <-airqualityAQI$Value,
-                                                         ifelse(airqualityAQI$Magnitude ==10,airqualityAQI$Value_recal <-airqualityAQI$Value,
-                                                                ifelse(airqualityAQI$Magnitude ==14,airqualityAQI$Value_recal <-airqualityAQI$Value/2.00,NA
-                                                                ))))))
+airqualityAQI$Value_recal <-
+  ifelse(airqualityAQI$Magnitude==1,airqualityAQI$Value_recal <-airqualityAQI$Value/2.62,
+  ifelse(airqualityAQI$Magnitude ==6,airqualityAQI$Value_recal <-airqualityAQI$Value/1.145,
+  ifelse(airqualityAQI$Magnitude ==8,airqualityAQI$Value_recal <-airqualityAQI$Value/1.88,
+  ifelse(airqualityAQI$Magnitude ==9,airqualityAQI$Value_recal <-airqualityAQI$Value,
+  ifelse(airqualityAQI$Magnitude ==10,airqualityAQI$Value_recal <-airqualityAQI$Value,
+  ifelse(airqualityAQI$Magnitude ==14,airqualityAQI$Value_recal <-airqualityAQI$Value/2.00,NA
+  ))))))
 #Standard levels
 airqualityAQI$Standard <- NA
 
-airqualityAQI$Standard <- ifelse(airqualityAQI$Magnitude==1,airqualityAQI$Standard <- 200,
-                                 ifelse(airqualityAQI$Magnitude ==6,airqualityAQI$Standard <-9,
-                                        ifelse(airqualityAQI$Magnitude ==8,airqualityAQI$Standard <-120,
-                                               ifelse(airqualityAQI$Magnitude ==9,airqualityAQI$Standard <-25,
-                                                      ifelse(airqualityAQI$Magnitude ==10,airqualityAQI$Standard <-50,
-                                                             ifelse(airqualityAQI$Magnitude ==14,airqualityAQI$Standard <-100,NA
-                                                             ))))))
+airqualityAQI$Standard <-
+  ifelse(airqualityAQI$Magnitude==1,airqualityAQI$Standard <- 200,
+  ifelse(airqualityAQI$Magnitude ==6,airqualityAQI$Standard <-9,
+  ifelse(airqualityAQI$Magnitude ==8,airqualityAQI$Standard <-120,
+  ifelse(airqualityAQI$Magnitude ==9,airqualityAQI$Standard <-25,
+  ifelse(airqualityAQI$Magnitude ==10,airqualityAQI$Standard <-50,
+  ifelse(airqualityAQI$Magnitude ==14,airqualityAQI$Standard <-100,NA
+  ))))))
 #Calculate AQI
 airqualityAQI$AQI <- airqualityAQI$Value_recal/airqualityAQI$Standard*100
 

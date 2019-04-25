@@ -73,6 +73,140 @@ weather$Rain2 <- NULL
 
 weather <- weather[c(1,2,3,7,4,5,6,11,12,8,9,10)]
 
+
+#Add Holidays
+
+getHoliday <- function(DATES) {
+  S_HOL1_2013 <- as.Date("2013-01-01", format = "%Y-%m-%d")
+  E_HOL1_2013 <- as.Date("2013-01-06", format  = "%Y-%m-%d")
+  
+  S_HOL2_2013 <- as.Date("2013-03-22", format = "%Y-%m-%d")
+  E_HOL2_2013 <- as.Date("2013-04-01", format  = "%Y-%m-%d")
+  
+  S_HOL3_2013 <- as.Date("2013-06-14", format = "%Y-%m-%d")
+  E_HOL3_2013 <- as.Date("2013-09-09", format  = "%Y-%m-%d")
+  
+  S_HOL4_2013 <- as.Date("2013-12-21", format = "%Y-%m-%d")
+  E_HOL4_2013 <- as.Date("2013-12-31", format  = "%Y-%m-%d")
+  
+  
+  
+  S_HOL1_2014 <- as.Date("2014-01-01", format = "%Y-%m-%d")
+  E_HOL1_2014 <- as.Date("2014-01-07", format  = "%Y-%m-%d")
+  
+  S_HOL2_2014 <- as.Date("2014-04-11", format = "%Y-%m-%d")
+  E_HOL2_2014 <- as.Date("2014-04-21", format  = "%Y-%m-%d")
+  
+  S_HOL3_2014 <- as.Date("2014-06-13", format = "%Y-%m-%d")
+  E_HOL3_2014 <- as.Date("2014-09-09", format  = "%Y-%m-%d")
+  
+  S_HOL4_2014 <- as.Date("2014-12-20", format = "%Y-%m-%d")
+  E_HOL4_2014 <- as.Date("2014-12-31", format  = "%Y-%m-%d")
+  
+  
+  
+  S_HOL1_2015 <- as.Date("2015-01-01", format = "%Y-%m-%d")
+  E_HOL1_2015 <- as.Date("2015-01-07", format  = "%Y-%m-%d")
+  
+  S_HOL2_2015 <- as.Date("2015-03-27", format = "%Y-%m-%d")
+  E_HOL2_2015 <- as.Date("2015-04-06", format  = "%Y-%m-%d")
+  
+  S_HOL3_2015 <- as.Date("2015-06-12", format = "%Y-%m-%d")
+  E_HOL3_2015 <- as.Date("2015-09-08", format  = "%Y-%m-%d")
+  
+  S_HOL4_2015 <- as.Date("2015-12-23", format = "%Y-%m-%d")
+  E_HOL4_2015 <- as.Date("2015-12-31", format  = "%Y-%m-%d")
+  
+  
+  
+  S_HOL1_2016 <- as.Date("2016-01-01", format = "%Y-%m-%d")
+  E_HOL1_2016 <- as.Date("2016-01-07", format  = "%Y-%m-%d")
+  
+  S_HOL2_2016 <- as.Date("2016-03-18", format = "%Y-%m-%d")
+  E_HOL2_2016 <- as.Date("2016-03-29", format  = "%Y-%m-%d")
+  
+  S_HOL3_2016 <- as.Date("2016-06-10", format = "%Y-%m-%d")
+  E_HOL3_2016 <- as.Date("2016-09-08", format  = "%Y-%m-%d")
+  
+  S_HOL4_2016 <- as.Date("2016-12-23", format = "%Y-%m-%d")
+  E_HOL4_2016 <- as.Date("2016-12-31", format  = "%Y-%m-%d")
+  
+  
+  
+  S_HOL1_2017 <- as.Date("2017-01-01", format = "%Y-%m-%d")
+  E_HOL1_2017 <- as.Date("2017-01-08", format  = "%Y-%m-%d")
+  
+  S_HOL2_2017 <- as.Date("2017-04-07", format = "%Y-%m-%d")
+  E_HOL2_2017 <- as.Date("2017-04-17", format  = "%Y-%m-%d")
+  
+  S_HOL3_2017 <- as.Date("2017-06-09", format = "%Y-%m-%d")
+  E_HOL3_2017 <- as.Date("2017-09-11", format  = "%Y-%m-%d")
+  
+  S_HOL4_2017 <- as.Date("2017-12-23", format = "%Y-%m-%d")
+  E_HOL4_2017 <- as.Date("2017-12-31", format  = "%Y-%m-%d")
+  
+  
+  
+  S_HOL1_2018 <- as.Date("2018-01-01", format = "%Y-%m-%d")
+  E_HOL1_2018 <- as.Date("2018-01-07", format  = "%Y-%m-%d")
+  
+  S_HOL2_2018 <- as.Date("2018-03-23", format = "%Y-%m-%d")
+  E_HOL2_2018 <- as.Date("2018-04-02", format  = "%Y-%m-%d")
+  
+  S_HOL3_2018 <- as.Date("2018-06-08", format = "%Y-%m-%d")
+  E_HOL3_2018 <- as.Date("2018-09-09", format  = "%Y-%m-%d")
+  
+  S_HOL4_2018 <- as.Date("2018-12-22", format = "%Y-%m-%d")
+  E_HOL4_2018 <- as.Date("2018-12-31", format  = "%Y-%m-%d")
+  
+  
+  
+  
+  ifelse (weather$Date >= S_HOL1_2013 & weather$Date <= E_HOL1_2013, 1,
+          ifelse (weather$Date >= S_HOL2_2013 & weather$Date <= E_HOL2_2013, 1,        
+          ifelse (weather$Date >= S_HOL3_2013 & weather$Date <= E_HOL3_2013, 1,
+          ifelse (weather$Date >= S_HOL4_2013 & weather$Date <= E_HOL4_2013, 1,
+
+          ifelse (weather$Date >= S_HOL1_2014 & weather$Date <= E_HOL1_2014, 1,       
+          ifelse (weather$Date >= S_HOL2_2014 & weather$Date <= E_HOL2_2014, 1,        
+          ifelse (weather$Date >= S_HOL3_2014 & weather$Date <= E_HOL3_2014, 1,
+          ifelse (weather$Date >= S_HOL4_2014 & weather$Date <= E_HOL4_2014, 1,
+                                                                  
+          ifelse (weather$Date >= S_HOL1_2015 & weather$Date <= E_HOL1_2015, 1,       
+          ifelse (weather$Date >= S_HOL2_2015 & weather$Date <= E_HOL2_2015, 1,        
+          ifelse (weather$Date >= S_HOL3_2015 & weather$Date <= E_HOL3_2015, 1,
+          ifelse (weather$Date >= S_HOL4_2015 & weather$Date <= E_HOL4_2015, 1,       
+          
+          ifelse (weather$Date >= S_HOL1_2016 & weather$Date <= E_HOL1_2016, 1,       
+          ifelse (weather$Date >= S_HOL2_2016 & weather$Date <= E_HOL2_2016, 1,        
+          ifelse (weather$Date >= S_HOL3_2016 & weather$Date <= E_HOL3_2016, 1,
+          ifelse (weather$Date >= S_HOL4_2016 & weather$Date <= E_HOL4_2016, 1,          
+          
+          ifelse (weather$Date >= S_HOL1_2017 & weather$Date <= E_HOL1_2017, 1,       
+          ifelse (weather$Date >= S_HOL2_2017 & weather$Date <= E_HOL2_2017, 1,        
+          ifelse (weather$Date >= S_HOL3_2017 & weather$Date <= E_HOL3_2017, 1,
+          ifelse (weather$Date >= S_HOL4_2017 & weather$Date <= E_HOL4_2017, 1,  
+          
+          ifelse (weather$Date >= S_HOL1_2018 & weather$Date <= E_HOL1_2018, 1,       
+          ifelse (weather$Date >= S_HOL2_2018 & weather$Date <= E_HOL2_2018, 1,        
+          ifelse (weather$Date >= S_HOL3_2018 & weather$Date <= E_HOL3_2018, 1,
+          ifelse (weather$Date >= S_HOL4_2018 & weather$Date <= E_HOL4_2018, 1,         
+          0))))))))))))))))))))))))
+  
+}
+
+weather$Holiday <- getHoliday(weather$Date)
+
+
+#Add day of the year
+weather$DayNr <- yday(weather$Date)
+
+
+#Add month seperately
+weather$Month <- month(weather$Date)
+
+
+
 #write to excel file
 write_xlsx(weather, "Cleaned_Weather2013-2018.xlsx")
 
