@@ -19,6 +19,7 @@ Total$Avg_Max_NO2 <- as.numeric(Total$Avg_Max_NO2)
 #MODEL
 
 # NO2 with wind speed
-mod1 = gam(Avg_Max_NO2~Avg_Streak+s(Total$DayNr, k=40, bs="ps"), data=Total)
+mod1 = gam(Avg_Max_NO2~Avg_Streak+s(DayNr, k=40, bs="ps"), data=Total)
 summary(mod1)
 plot(mod1)
+
