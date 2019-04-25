@@ -199,6 +199,10 @@ NO2_new2 <- NO2_new %>%
   select(-row_id)  # drop the index
 
 
+#remove -inf values
+is.na(NO2_new2) <- sapply(NO2_new2, is.infinite)
+
+
 #Average NO2 of all stations
 NO2_new2$avg_NO2 <- rowMeans(NO2_new2[,c(2:25)],na.rm=TRUE)
 
