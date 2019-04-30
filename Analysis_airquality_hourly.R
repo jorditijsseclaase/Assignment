@@ -91,7 +91,19 @@ NO2_hour <- NO2_hour%>%
 
 
 
-ggplot(data =NO2_hour,aes(x = Hour, y = mean,color=Date)) +
+
+#Week day or weekend day
+NO2_hour$day <- weekdays.Date(NO2_hour$Date, abbr = TRUE)
+NO2_hour$Daytype <- ifelse(NO2_hour$day=="za" | NO2_hour$day=="zo",
+                                  NO2_hour$Daytype<- "Weekend","Weekday")
+
+
+ggplot(data =NO2_hour,aes(x = Hour, y = mean)) +
+  geom_point()+
+  stat_smooth()+
+  ylab("NO2 concentration")
+
+ggplot(data =NO2_hour,aes(x = Hour, y = mean,color=Daytype)) +
   geom_point()+
   stat_smooth()+
   ylab("NO2 concentration")
