@@ -11,9 +11,9 @@ library(dplyr)
 library(lubridate)
 
 
-Total <- read_excel("Cleaned_Total.xlsx")
+Total <- read_excel("Cleaned_Total_2.xlsx")
 
-Total <- Total %>% select(1:21)
+Total <- Total %>% select(1:24)
 
 NO2_max_per_day <- read_excel("Cleaned_NO2_max_hourly.xlsx")
 
@@ -31,22 +31,21 @@ Total_NO2$num_stations_NO2_200_400 <-NO2_max_per_day$num_stations_NO2_200_400
 Total_NO2$num_stations_NO2_min_400 <-NO2_max_per_day$num_stations_NO2_min_400
 
 
-# Make everything a numbered structure
-Total_NO2$Rain <- as.numeric(Total_NO2$Rain)
+# Make right structure
+
 Total_NO2$Days_last_rain <- as.numeric(Total_NO2$Days_last_rain)
-Total_NO2$Avg_Max_NO2 <- as.numeric(Total_NO2$Avg_Max_NO2)
 Total_NO2$Max_NO2_station <- as.numeric(Total_NO2$Max_NO2_station)
 
-Total_NO2$Avg_Max_NO2 <- as.numeric(Total_NO2$Avg_Max_NO2)
+
 
 
 #Write to csv
-write_xlsx(Total_NO2, "Cleaned_Total_NO2_max_hourly.xlsx")
+write_xlsx(Total_NO2, "Cleaned_Total_NO2_max_hourly_2.xlsx")
 
 
 
 
-## Make Neural network dataframe for matlab
+## Make every variable numeric
 NN <- Total_NO2
 
 
@@ -62,24 +61,29 @@ NN$Season <- revalue(NN$Season,
                         c("Winter" = "1", "Spring" = "2", "Summer"="3","Fall" = "4"))
 NN$Season <- as.numeric(NN$Season)
 
-
+NN1 <- NN
 NN$day <- NULL
-NN$Date <- NULL
+NN1$day <- NULL
+NN1$Date <- NULL
+
+
+#Correlations table
+cor <- cor(NN1, use = "pairwise.complete.obs")
+
 
 #Write to csv
-write_xlsx(NN, "NN.xlsx")
+write_xlsx(NN, "NN_2.xlsx")
 
 
 
-plot(Total_NO2$Date,Total_NO2$users_Street30)
+plot(Total_NO2$Date,Total_NO2$users_Street_30)
 
 
 #plot of users M30
 ggplot(data = head(Total_NO2,2191)) +
-  geom_point(mapping = aes(x = Date, y = Max_NO2, color=Season)) +
+  geom_point(mapping = aes(x = Date, y = Max_NO2, color=Season)) 
  
-  # ylim(0,1.5*10^7)+
-  ggtitle("Total users per day M30")
+
 
 
 
@@ -132,7 +136,7 @@ p1 <- ggplot(data =head(Total_NO2,2191),aes(x = Date, y = Avg_Max_NO2)) +
   # geom_line()+
   stat_smooth(method="gam",formula=y~s(x,k=100),se=FALSE)
 
-p2 <- ggplot(data =head(Total_NO2,2191),aes(x = Date, y = T_max)) +
+p2 <- ggplot(data =head(Total_NO2,2191),aes(x = Date, y = Avg_T)) +
   # geom_line()+
   stat_smooth(method="gam",formula=y~s(x,k=100),se=FALSE)
 
@@ -140,7 +144,7 @@ p3 <- ggplot(Total_NO2, aes(x=Date, y=Avg_Streak))+
   # geom_line()+
   stat_smooth(method="gam",formula=y~s(x,k=100),se=FALSE)
 
-p4 <- ggplot(Total_NO2, aes(x=Date, y=users_Street30))+
+p4 <- ggplot(Total_NO2, aes(x=Date, y=users_Street_30))+
   #   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=1000),se=FALSE)
   
@@ -151,14 +155,13 @@ multiplot(p1,p2,p3,p4,cols=1)
 
 #Correlation
 
-#Correlations table
-cor <- cor(NN, use = "pairwise.complete.obs")
+
 
 
 #Correlation plots
 
 #T
-ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = T_max)) +
+ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = Avg_T)) +
   xlab("Max_NO2")+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
@@ -170,7 +173,7 @@ ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = Avg_Streak)) +
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
 
 #Users Street 30
-ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = users_Street30)) +
+ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = users_Street_30)) +
   xlab("Max_NO2")+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)

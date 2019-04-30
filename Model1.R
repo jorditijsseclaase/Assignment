@@ -12,9 +12,9 @@ library(lubridate)
 
 library(mgcv)
 
-Total <- read_excel("NN.xlsx")
+Total <- read_excel("NN_2.xlsx")
 
-Total$Avg_Max_NO2 <- as.numeric(Total$Avg_Max_NO2)
+
 
 # #MODEL to predict NO2
 
@@ -22,14 +22,14 @@ Total$Avg_Max_NO2 <- as.numeric(Total$Avg_Max_NO2)
 #extra variables
 
 #day number from start to end
-b = 1:nrow(Total)
+Total$b = 1:nrow(Total)
 
 #total number of vehicles scaled
-tvk <- Total$Vehicles_Km_Total/max(Total$Vehicles_Km_Total)
+Total$tvk <- Total$Vehicles_Km_Total/max(Total$Vehicles_Km_Total)
 
 #Average_Max_NO2 concentration previous day
 # NO2_yest <- Total$Avg_Max_NO2[-nrow(Total)]
-NO2_yest <- lag(Total$Avg_Max_NO2, n=1L)
+Total$NO2_yest <- lag(Total$Avg_Max_NO2, n=1L)
 
 
 
@@ -42,9 +42,24 @@ plot(mod1)
 
 
 
-mod2 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") + s(Streak_max, k = 20, bs = "ps") + s(DayNr, k = 40, bs = "ps") + s(b, k = 20, bs = "ps") + s(T_max, k = 20, bs = "ps") + 
-             s(T_min, k = 20, bs = "ps") + s(Avg_T, k = 20, bs = "ps") + s(Rain_ml, k = 20, bs = "ps") + factor(Rain) + factor(Daytype) + factor(Holiday) +
-             tvk + s(NO2_yest, k = 20, bs = "ps"), data=Total)
+mod2 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") + 
+             # s(Streak_max, k = 20, bs = "ps") + #NOT SIGN
+             s(Streak_min, k = 20, bs = "ps") + 
+             s(Avg_Streak, k = 20, bs = "ps") + 
+             s(Dir_Streak, k = 20, bs = "ps") + 
+             s(T_max, k = 20, bs = "ps") + 
+             s(T_min, k = 20, bs = "ps") +
+             # s(Avg_T, k = 20, bs = "ps") + #NOT SIGN
+             s(Rain_ml, k = 20, bs = "ps") +
+             factor(Rain) + #NOT SIGN
+             # Days_last_rain + #NOT SIGN
+             # Season + #NOT SIGN
+             factor(Daytype) + factor(Holiday) +
+             s(DayNr, k = 40, bs = "ps") + 
+             # s(b, k = 20, bs = "ps") + #NOT SIGN
+             s(NO2_yest, k = 20, bs = "ps") +
+             # tvk #NOT SIGN
+            , data=Total)
 
 summary(mod2)
 plot(mod2)
