@@ -27,48 +27,134 @@ Total$b = 1:nrow(Total)
 #total number of vehicles scaled
 Total$tvk <- Total$Vehicles_Km_Total/max(Total$Vehicles_Km_Total)
 
+
+## DELAY information with one day
+
 #Average_Max_NO2 concentration previous day
-# NO2_yest <- Total$Avg_Max_NO2[-nrow(Total)]
-Total$NO2_yest <- lag(Total$Avg_Max_NO2, n=1L)
+
+#NO2
+Total$NO2_prev <- lag(Total$Avg_Max_NO2, n=1L)
+
+#Rain ml
+Total$Rain_ml_prev <- lag(Total$Rain_ml, n=1L)
+
+#Rain y/n
+Total$Rain_prev <- lag(Total$Rain, n=1L)
+
+#Streak min
+Total$Streak_min_prev <- lag(Total$Streak_min, n=1L)
+
+#Streak max
+Total$Streak_max_prev <- lag(Total$Streak_max, n=1L)
+
+#Streak avg
+Total$Avg_Streak_prev <- lag(Total$Avg_Streak, n=1L)
+
+#Streak dir
+Total$Dir_Streak_prev <- lag(Total$Dir_Streak, n=1L)
+
+#T max
+Total$T_max_prev <- lag(Total$T_max, n=1L)
+
+#T min
+Total$T_min_prev <- lag(Total$T_min, n=1L)
+
+#T avg
+Total$Avg_T_prev <- lag(Total$Avg_T, n=1L)
 
 
 
 
-
-mod1 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") + s(DayNr, k = 40, bs = "ps") + s(b, k = 20, bs = "ps") + s(T_max, k = 20, bs = "ps") + 
-             factor(Rain) + factor(Daytype) + factor(Holiday) + tvk + s(NO2_yest, k = 20, bs = "ps"), data=Total)
-summary(mod1)
-plot(mod1)
-
+ # mod1 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") + s(DayNr, k = 40, bs = "ps") + s(b, k = 20, bs = "ps") + s(T_max, k = 20, bs = "ps") + 
+ #             factor(Rain) + factor(Daytype) + factor(Holiday) + tvk + s(NO2_prev, k = 20, bs = "ps"), data=Total)
+ # summary(mod1)
+# plot(mod1)
 
 
-mod2 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") + 
-             # s(Streak_max, k = 20, bs = "ps") + #NOT SIGN
-             s(Streak_min, k = 20, bs = "ps") + 
-             s(Avg_Streak, k = 20, bs = "ps") + 
-             s(Dir_Streak, k = 20, bs = "ps") + 
-             s(T_max, k = 20, bs = "ps") + 
+#Everything with normal data, 70%
+# mod2 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") + 
+#              # s(Streak_max, k = 20, bs = "ps") + #NOT SIGN
+#              s(Streak_min, k = 20, bs = "ps") + 
+#              s(Avg_Streak, k = 20, bs = "ps") + 
+#              s(Dir_Streak, k = 20, bs = "ps") + 
+#              s(T_max, k = 20, bs = "ps") + 
+#              s(T_min, k = 20, bs = "ps") +
+#              # s(Avg_T, k = 20, bs = "ps") + #NOT SIGN
+#              s(Rain_ml, k = 20, bs = "ps") +
+#              # factor(Rain) + #NOT SIGN
+#              # Days_last_rain + #NOT SIGN
+#              # Season + #NOT SIGN
+#              factor(Daytype) + factor(Holiday) +
+#              s(DayNr, k = 40, bs = "ps") + 
+#              # s(b, k = 20, bs = "ps") + #NOT SIGN
+#              s(NO2_prev, k = 20, bs = "ps") 
+#              # tvk #NOT SIGN
+#             , data=Total)
+# 
+# summary(mod2)
+# plot(mod2)
+
+
+#Everything with data of previous day, 55%
+# mod3 = gam(Avg_Max_NO2 ~ s(Avg_Streak_prev, k = 20, bs = "ps") + 
+#              s(Streak_max_prev, k = 20, bs = "ps") + #NOT SIGN
+#              # s(Streak_min_prev, k = 20, bs = "ps") + 
+#              s(Avg_Streak_prev, k = 20, bs = "ps") + 
+#              s(Dir_Streak_prev, k = 20, bs = "ps") + 
+#              s(T_max_prev, k = 20, bs = "ps") + 
+#              # s(T_min_prev, k = 20, bs = "ps") +
+#              s(Avg_T_prev, k = 20, bs = "ps") + #NOT SIGN
+#              # s(Rain_ml_prev, k = 20, bs = "ps") +
+#              # factor(Rain_prev) + #NOT SIGN
+#              Days_last_rain + #NOT SIGN
+#              # Season + #NOT SIGN
+#              factor(Daytype) + factor(Holiday) +
+#              s(DayNr, k = 40, bs = "ps") + 
+#              s(b, k = 20, bs = "ps") + #NOT SIGN
+#              s(NO2_prev, k = 20, bs = "ps") 
+#            # tvk #NOT SIGN
+#            , data=Total)
+# 
+# summary(mod3)
+# plot(mod3)
+
+
+
+#Both models together 71,5%
+mod4 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") +
+              s(Streak_max, k = 20, bs = "ps") + #NOT SIGN
+             s(Streak_min, k = 20, bs = "ps") +
+             s(Avg_Streak, k = 20, bs = "ps") +
+             s(Dir_Streak, k = 20, bs = "ps") +
+             s(T_max, k = 20, bs = "ps") +
              s(T_min, k = 20, bs = "ps") +
-             # s(Avg_T, k = 20, bs = "ps") + #NOT SIGN
+              s(Avg_T, k = 20, bs = "ps") + #NOT SIGN
              s(Rain_ml, k = 20, bs = "ps") +
-             factor(Rain) + #NOT SIGN
-             # Days_last_rain + #NOT SIGN
-             # Season + #NOT SIGN
+              factor(Rain) + #NOT SIGN
+              Days_last_rain + #NOT SIGN
+              # Season + #NOT SIGN
              factor(Daytype) + factor(Holiday) +
-             s(DayNr, k = 40, bs = "ps") + 
-             # s(b, k = 20, bs = "ps") + #NOT SIGN
-             s(NO2_yest, k = 20, bs = "ps") +
-             # tvk #NOT SIGN
-            , data=Total)
+             s(DayNr, k = 40, bs = "ps") +
+              # s(b, k = 20, bs = "ps") + #NOT SIGN
+             s(NO2_prev, k = 20, bs = "ps") +
+              # tvk + #NOT SIGN  
+             
+             s(Avg_Streak_prev, k = 20, bs = "ps") + 
+             # s(Streak_max_prev, k = 20, bs = "ps") + #NOT SIGN
+               s(Streak_min_prev, k = 20, bs = "ps") + 
+             # s(Avg_Streak_prev, k = 20, bs = "ps") + 
+             # s(Dir_Streak_prev, k = 20, bs = "ps") + 
+             s(T_max_prev, k = 20, bs = "ps") + 
+              # s(T_min_prev, k = 20, bs = "ps") +
+             s(Avg_T_prev, k = 20, bs = "ps") #NOT SIGN
+              # s(Rain_ml_prev, k = 20, bs = "ps") +
+              # factor(Rain_prev)  #NOT SIGN
+             ,data=Total)
 
-summary(mod2)
-plot(mod2)
+summary(mod4)
+plot(mod4)
 
 
-
-
-#if max temperature rises, NO2 concentration rises, but if min temperature rises, NO2 concentration decreases!
-# if we add avg_T instead of min and max, we see a rising NO2 concentration with a rising temperature. but adding T-min and T_max gives a better result.
 
 
 
