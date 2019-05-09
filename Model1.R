@@ -71,88 +71,85 @@ Total$Avg_T_prev <- lag(Total$Avg_T, n=1L)
 # plot(mod1)
 
 
-#Everything with normal data, 70%
-# mod2 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") + 
-#              # s(Streak_max, k = 20, bs = "ps") + #NOT SIGN
-#              s(Streak_min, k = 20, bs = "ps") + 
-#              s(Avg_Streak, k = 20, bs = "ps") + 
-#              s(Dir_Streak, k = 20, bs = "ps") + 
-#              s(T_max, k = 20, bs = "ps") + 
-#              s(T_min, k = 20, bs = "ps") +
-#              # s(Avg_T, k = 20, bs = "ps") + #NOT SIGN
-#              s(Rain_ml, k = 20, bs = "ps") +
-#              # factor(Rain) + #NOT SIGN
-#              # Days_last_rain + #NOT SIGN
-#              # Season + #NOT SIGN
-#              factor(Daytype) + factor(Holiday) +
-#              s(DayNr, k = 40, bs = "ps") + 
-#              # s(b, k = 20, bs = "ps") + #NOT SIGN
-#              s(NO2_prev, k = 20, bs = "ps") 
-#              # tvk #NOT SIGN
-#             , data=Total)
-# 
-# summary(mod2)
-# plot(mod2)
-
-
-#Everything with data of previous day, 55%
-# mod3 = gam(Avg_Max_NO2 ~ s(Avg_Streak_prev, k = 20, bs = "ps") + 
-#              s(Streak_max_prev, k = 20, bs = "ps") + #NOT SIGN
-#              # s(Streak_min_prev, k = 20, bs = "ps") + 
-#              s(Avg_Streak_prev, k = 20, bs = "ps") + 
-#              s(Dir_Streak_prev, k = 20, bs = "ps") + 
-#              s(T_max_prev, k = 20, bs = "ps") + 
-#              # s(T_min_prev, k = 20, bs = "ps") +
-#              s(Avg_T_prev, k = 20, bs = "ps") + #NOT SIGN
-#              # s(Rain_ml_prev, k = 20, bs = "ps") +
-#              # factor(Rain_prev) + #NOT SIGN
-#              Days_last_rain + #NOT SIGN
-#              # Season + #NOT SIGN
-#              factor(Daytype) + factor(Holiday) +
-#              s(DayNr, k = 40, bs = "ps") + 
-#              s(b, k = 20, bs = "ps") + #NOT SIGN
-#              s(NO2_prev, k = 20, bs = "ps") 
-#            # tvk #NOT SIGN
-#            , data=Total)
-# 
-# summary(mod3)
-# plot(mod3)
-
-
-
-#Both models together 71,5%
-mod4 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") +
-              s(Streak_max, k = 20, bs = "ps") + #NOT SIGN
+#Everything with normal data, 69,8%
+mod1 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") +
+             # s(Streak_max, k = 20, bs = "ps") + #NOT SIGN
              s(Streak_min, k = 20, bs = "ps") +
-             s(Avg_Streak, k = 20, bs = "ps") +
              s(Dir_Streak, k = 20, bs = "ps") +
              s(T_max, k = 20, bs = "ps") +
              s(T_min, k = 20, bs = "ps") +
-              s(Avg_T, k = 20, bs = "ps") + #NOT SIGN
+             # s(Avg_T, k = 20, bs = "ps") + #NOT SIGN
              s(Rain_ml, k = 20, bs = "ps") +
-              factor(Rain) + #NOT SIGN
-              Days_last_rain + #NOT SIGN
-              # Season + #NOT SIGN
+             # factor(Rain) + #NOT SIGN
+             # Days_last_rain + #NOT SIGN
+             # Season + #NOT SIGN
              factor(Daytype) + factor(Holiday) +
              s(DayNr, k = 40, bs = "ps") +
+             # s(b, k = 20, bs = "ps") + #NOT SIGN
+             s(NO2_prev, k = 20, bs = "ps")
+             # tvk #NOT SIGN
+            , data=Total)
+
+summary(mod1)
+plot(mod1)
+
+
+#Everything with data of previous day, 55,4%
+mod2 = gam(Avg_Max_NO2 ~ s(Avg_Streak_prev, k = 20, bs = "ps") +
+             s(Streak_max_prev, k = 20, bs = "ps") + 
+             # s(Streak_min_prev, k = 20, bs = "ps") +#NOT SIGN
+             s(Dir_Streak_prev, k = 20, bs = "ps") +
+             s(T_max_prev, k = 20, bs = "ps") +
+             # s(T_min_prev, k = 20, bs = "ps") +#NOT SIGN
+             s(Avg_T_prev, k = 20, bs = "ps") +
+             # s(Rain_ml_prev, k = 20, bs = "ps") +#NOT SIGN
+             # factor(Rain_prev) + #NOT SIGN
+             Days_last_rain + 
+             # Season + #NOT SIGN
+             factor(Daytype) + factor(Holiday) +
+             s(DayNr, k = 40, bs = "ps") +
+             s(b, k = 20, bs = "ps") +
+             s(NO2_prev, k = 20, bs = "ps")
+            # tvk #NOT SIGN
+           , data=Total)
+
+summary(mod2)
+plot(mod2)
+
+
+
+#Both models together 71,2%
+mod3 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") +
+              s(Streak_max, k = 20, bs = "ps") + 
+              s(Streak_min, k = 20, bs = "ps") +
+              s(Dir_Streak, k = 20, bs = "ps") +
+              s(T_max, k = 20, bs = "ps") +
+              s(T_min, k = 20, bs = "ps") +
+              s(Avg_T, k = 20, bs = "ps") + 
+              s(Rain_ml, k = 20, bs = "ps") +
+              factor(Rain) + 
+              Days_last_rain + 
+              # Season + #NOT SIGN
+              factor(Daytype) + factor(Holiday) +
+              s(DayNr, k = 40, bs = "ps") +
               # s(b, k = 20, bs = "ps") + #NOT SIGN
-             s(NO2_prev, k = 20, bs = "ps") +
+              s(NO2_prev, k = 20, bs = "ps") +
               # tvk + #NOT SIGN  
              
-             s(Avg_Streak_prev, k = 20, bs = "ps") + 
-             # s(Streak_max_prev, k = 20, bs = "ps") + #NOT SIGN
-               s(Streak_min_prev, k = 20, bs = "ps") + 
-             # s(Avg_Streak_prev, k = 20, bs = "ps") + 
-             # s(Dir_Streak_prev, k = 20, bs = "ps") + 
-             s(T_max_prev, k = 20, bs = "ps") + 
-              # s(T_min_prev, k = 20, bs = "ps") +
-             s(Avg_T_prev, k = 20, bs = "ps") #NOT SIGN
-              # s(Rain_ml_prev, k = 20, bs = "ps") +
-              # factor(Rain_prev)  #NOT SIGN
-             ,data=Total)
+              # s(Avg_Streak_prev, k = 20, bs = "ps") + #NOT SIGN
+              # s(Streak_max_prev, k = 20, bs = "ps") + #NOT SIGN
+              s(Streak_min_prev, k = 20, bs = "ps") + 
+              # s(Dir_Streak_prev, k = 20, bs = "ps") + #NOT SIGN
+              s(T_max_prev, k = 20, bs = "ps") + 
+              # s(T_min_prev, k = 20, bs = "ps") + #NOT SIGN
+              s(Avg_T_prev, k = 20, bs = "ps") 
+              # s(Rain_ml_prev, k = 20, bs = "ps") + #NOT SIGN
+              # factor(Rain_prev) #NOT SIGN
+              ,data=Total)
+             
 
-summary(mod4)
-plot(mod4)
+summary(mod3)
+plot(mod3)
 
 
 
