@@ -11,12 +11,12 @@ library("readxl")
 mar_mo19 <- read_delim("Data/108_2/Anio2019/mar_mo19.csv", 
                        ";", escape_double = FALSE, trim_ws = TRUE)
 
-#load april here when available and run hourly_NO2.R afterwards
-
+abr_mo19 <- read_delim("Data/108_2/Anio2019/abr_mo19.csv", 
+                       ";", escape_double = FALSE, trim_ws = TRUE)
 
 
 #Merge all months together
-airquality_hourly <- rbind(mar_mo19)
+airquality_hourly <- rbind(mar_mo19,abr_mo19)
 
 
 airquality_hourly$PERIODO_ANALISIS <- NULL

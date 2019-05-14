@@ -7,16 +7,22 @@ library(XML)
 require(XML)
 library(writexl)
 library("readxl")
-library(dplyr)
+# library(dplyr)
+library(plyr)
 library(lubridate)
 
 library(mgcv)
 
+#Load total data
 Total <- read_excel("NN_2.xlsx")
 
 
+#Load hourly data
+Total_hourly <- read_excel("NN_hourly.xlsx")
+NO2_Max <- read_excel("NN_max_NO2.xlsx")
 
-# #MODEL to predict NO2
+
+#### MODEL to predict NO2 on daily data
 
 
 #extra variables
@@ -72,49 +78,49 @@ Total$Avg_T_prev <- lag(Total$Avg_T, n=1L)
 
 
 #Everything with normal data, 69,8%
-mod1 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") +
-             # s(Streak_max, k = 20, bs = "ps") + #NOT SIGN
-             s(Streak_min, k = 20, bs = "ps") +
-             s(Dir_Streak, k = 20, bs = "ps") +
-             s(T_max, k = 20, bs = "ps") +
-             s(T_min, k = 20, bs = "ps") +
-             # s(Avg_T, k = 20, bs = "ps") + #NOT SIGN
-             s(Rain_ml, k = 20, bs = "ps") +
-             # factor(Rain) + #NOT SIGN
-             # Days_last_rain + #NOT SIGN
-             # Season + #NOT SIGN
-             factor(Daytype) + factor(Holiday) +
-             s(DayNr, k = 40, bs = "ps") +
-             # s(b, k = 20, bs = "ps") + #NOT SIGN
-             s(NO2_prev, k = 20, bs = "ps")
-             # tvk #NOT SIGN
-            , data=Total)
-
-summary(mod1)
-plot(mod1)
+# mod1 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") +
+#              # s(Streak_max, k = 20, bs = "ps") + #NOT SIGN
+#              s(Streak_min, k = 20, bs = "ps") +
+#              s(Dir_Streak, k = 20, bs = "ps") +
+#              s(T_max, k = 20, bs = "ps") +
+#              s(T_min, k = 20, bs = "ps") +
+#              # s(Avg_T, k = 20, bs = "ps") + #NOT SIGN
+#              s(Rain_ml, k = 20, bs = "ps") +
+#              # factor(Rain) + #NOT SIGN
+#              # Days_last_rain + #NOT SIGN
+#              # Season + #NOT SIGN
+#              factor(Daytype) + factor(Holiday) +
+#              s(DayNr, k = 40, bs = "ps") +
+#              # s(b, k = 20, bs = "ps") + #NOT SIGN
+#              s(NO2_prev, k = 20, bs = "ps")
+#              # tvk #NOT SIGN
+#             , data=Total)
+# 
+# summary(mod1)
+# plot(mod1)
 
 
 #Everything with data of previous day, 55,4%
-mod2 = gam(Avg_Max_NO2 ~ s(Avg_Streak_prev, k = 20, bs = "ps") +
-             s(Streak_max_prev, k = 20, bs = "ps") + 
-             # s(Streak_min_prev, k = 20, bs = "ps") +#NOT SIGN
-             s(Dir_Streak_prev, k = 20, bs = "ps") +
-             s(T_max_prev, k = 20, bs = "ps") +
-             # s(T_min_prev, k = 20, bs = "ps") +#NOT SIGN
-             s(Avg_T_prev, k = 20, bs = "ps") +
-             # s(Rain_ml_prev, k = 20, bs = "ps") +#NOT SIGN
-             # factor(Rain_prev) + #NOT SIGN
-             Days_last_rain + 
-             # Season + #NOT SIGN
-             factor(Daytype) + factor(Holiday) +
-             s(DayNr, k = 40, bs = "ps") +
-             s(b, k = 20, bs = "ps") +
-             s(NO2_prev, k = 20, bs = "ps")
-            # tvk #NOT SIGN
-           , data=Total)
-
-summary(mod2)
-plot(mod2)
+# mod2 = gam(Avg_Max_NO2 ~ s(Avg_Streak_prev, k = 20, bs = "ps") +
+#              s(Streak_max_prev, k = 20, bs = "ps") + 
+#              # s(Streak_min_prev, k = 20, bs = "ps") +#NOT SIGN
+#              s(Dir_Streak_prev, k = 20, bs = "ps") +
+#              s(T_max_prev, k = 20, bs = "ps") +
+#              # s(T_min_prev, k = 20, bs = "ps") +#NOT SIGN
+#              s(Avg_T_prev, k = 20, bs = "ps") +
+#              # s(Rain_ml_prev, k = 20, bs = "ps") +#NOT SIGN
+#              # factor(Rain_prev) + #NOT SIGN
+#              Days_last_rain + 
+#              # Season + #NOT SIGN
+#              factor(Daytype) + factor(Holiday) +
+#              s(DayNr, k = 40, bs = "ps") +
+#              s(b, k = 20, bs = "ps") +
+#              s(NO2_prev, k = 20, bs = "ps")
+#             # tvk #NOT SIGN
+#            , data=Total)
+# 
+# summary(mod2)
+# plot(mod2)
 
 
 
@@ -148,8 +154,51 @@ mod3 = gam(Avg_Max_NO2 ~ s(Avg_Streak, k = 20, bs = "ps") +
               ,data=Total)
              
 
-summary(mod3)
-plot(mod3)
+# summary(mod3)
+# plot(mod3)
+
+
+#### Model to predit NO2 on hourly data
+
+#make variables numeric
+
+Total_hourly$Daytype <- revalue(Total_hourly$Daytype,
+                      c("Weekday" = "0", "Weekend" = "1"))
+Total_hourly$Daytype <- as.numeric(Total_hourly$Daytype)
+
+#add day number of the year
+Total_hourly$DayNr <- yday(Total_hourly$RunDate)
+
+
+
+
+
+mod4 = gam(NO2 ~ s(Avg_Total_Veh_M30, k = 20, bs = "ps")+
+             # factor(Daytype)+
+             s(Hour, k = 20, bs = "ps")+
+             s(DayNr, k = 20, bs = "ps")+
+             s(T, k = 20, bs = "ps")+
+             # s(Rain_ml, k = 20, bs = "ps")+
+             factor(Rain)+
+             s(Wind, k = 20, bs = "ps")+
+             s(Wind_dir, k = 20, bs = "ps")
+           # +predict.gam(mod3)
+              ,data=Total_hourly)
+summary(mod4)
+# plot(mod4)
+
+# NO2_hourly_pred <- predict.gam(mod3,mod4)
+
+        
+
+
+
+
+
+
+
+
+
 
 
 

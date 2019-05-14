@@ -8,8 +8,8 @@ library(writexl)
 library(ggplot2)
 
 #load data
-traffic_hourly <- read.csv("RT_traffic_hourly 2.csv")
-weather_hourly <- read_excel("Cleaned_Weather_hourly.xlsx") #only from 15-4-2019
+traffic_hourly <- read.csv("RT_traffic_hourly_3.csv")
+weather_hourly <- read_excel("Cleaned_Weather_hourly.xlsx") 
 
 
 library(dplyr)
