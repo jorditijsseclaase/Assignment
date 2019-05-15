@@ -152,24 +152,24 @@ ggplot(data =Total,aes(x = Hour, y = T)) +
 
 ## Correlation plots
 
-ggplot(data =Total,aes(x = NO2, y = T)) +
+ggplot(data =Total,aes(x = T , y = NO2)) +
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=20),se=FALSE)
   # ylab("T")
 
 
 
-ggplot(data =Total,aes(x = NO2, y = Wind)) +
+ggplot(data =Total,aes(x = Wind , y = NO2 )) +
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=20),se=FALSE)+
-  ylab("Wind speed")
+  xlab("Wind speed")
 
 
 
-ggplot(data =Total,aes(x = NO2, y = Avg_Total_Veh_M30)) +
+ggplot(data =Total,aes(x = Avg_Total_Veh_M30 , y =NO2 ,color=Daytype)) +
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=100),se=FALSE)+
-  ylab("Vehicles on M30")
+  xlab("Vehicles on M30")
 
 
 

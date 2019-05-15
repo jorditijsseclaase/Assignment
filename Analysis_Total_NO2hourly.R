@@ -161,20 +161,20 @@ multiplot(p1,p2,p3,p4,cols=1)
 #Correlation plots
 
 #T
-ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = Avg_T)) +
-  xlab("Max_NO2")+
+ggplot(data =head(Total_NO2,2191),aes(x = Avg_T , y = Avg_Max_NO2)) +
+  ylab("Max_NO2")+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
 
 #Wind
-ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = Avg_Streak)) +
-  xlab("Max_NO2")+
+ggplot(data =head(Total_NO2,2191),aes(x = Avg_Streak, y = Avg_Max_NO2 )) +
+  ylab("Max_NO2")+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
 
 #Users Street 30
-ggplot(data =head(Total_NO2,2191),aes(x = Avg_Max_NO2, y = users_Street_30)) +
-  xlab("Max_NO2")+
+ggplot(data =head(Total_NO2,2191),aes(x = users_Street_30 , y =Avg_Max_NO2 )) +
+  ylab("Max_NO2")+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=200),se=FALSE)
 

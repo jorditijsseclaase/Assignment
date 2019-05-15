@@ -84,23 +84,31 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
 
 #Analysis 
-ggplot(data=traffic_hourly2, aes(x=Hour, y=Avg_Total_Veh_M30))+
+g1 <- ggplot(data=traffic_hourly2, aes(x=Hour, y=Avg_Total_Veh_M30))+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=20),se=FALSE)+
   ylab("Total vehicles M30")
 
 
-ggplot(data=traffic_hourly2, aes(x=Hour, y=Avg_Total_Veh_M30, color=Daytype))+
+g2 <- ggplot(data=traffic_hourly2, aes(x=Hour, y=Avg_Total_Veh_M30, color=Daytype))+
   geom_point()+
   stat_smooth(method="gam",formula=y~s(x,k=20),se=FALSE)+
   ylab("Total vehicles M30")
 
 
+multiplot(g1,g2,cols=1)
+
+ggplot(data=traffic_hourly2, aes(x=Hour, y=Avg_Speed_Surface))+
+  geom_point()+
+  stat_smooth(method="gam",formula=y~s(x,k=20),se=FALSE)+
+  ylab("Average speed surface M30")
 
 
 
-
-
+ggplot(data=traffic_hourly2, aes(x=Avg_Total_Veh_M30 , y= Avg_Speed_Surface))+
+  geom_point()+
+  stat_smooth(method="gam",formula=y~s(x,k=20),se=FALSE)
+  # ylab("")
 
 
 
