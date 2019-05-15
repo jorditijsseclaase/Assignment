@@ -173,10 +173,11 @@ Total_hourly$DayNr <- yday(Total_hourly$RunDate)
 
 
 
-mod4 = gam(NO2 ~ s(Avg_Total_Veh_M30, k = 20, bs = "ps")+
-             # factor(Daytype)+
+mod4 = gam(NO2 ~ s(Avg_Total_Veh_M30, by=factor(Daytype), k = 20, bs = "ps")+
+             #s(Avg_Speed_Surface, by=factor(Daytype), k = 20, bs = "ps")+
+             factor(Daytype)+
              s(Hour, k = 20, bs = "ps")+
-             s(DayNr, k = 20, bs = "ps")+
+             #s(DayNr, k = 5, bs = "ps")+
              s(T, k = 20, bs = "ps")+
              # s(Rain_ml, k = 20, bs = "ps")+
              factor(Rain)+
@@ -185,12 +186,25 @@ mod4 = gam(NO2 ~ s(Avg_Total_Veh_M30, k = 20, bs = "ps")+
            # +predict.gam(mod3)
               ,data=Total_hourly)
 summary(mod4)
-# plot(mod4)
+#plot(mod4)
 
 # NO2_hourly_pred <- predict.gam(mod3,mod4)
 
         
-
+mod5 = gam(NO2 ~ te(Avg_Total_Veh_M30, Avg_Speed_Surface, by=factor(Daytype), k = 10, bs = "ps")+
+             #s(Avg_Speed_Surface, by=factor(Daytype), k = 20, bs = "ps")+
+             factor(Daytype)+
+             s(Hour, k = 20, bs = "ps")+
+             #s(DayNr, k = 5, bs = "ps")+
+             s(T, k = 20, bs = "ps")+
+             # s(Rain_ml, k = 20, bs = "ps")+
+             factor(Rain)+
+             s(Wind, k = 20, bs = "ps")+
+             s(Wind_dir, k = 20, bs = "ps")
+           # +predict.gam(mod3)
+           ,data=Total_hourly)
+summary(mod5)
+plot(mod5)
 
 
 
